@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鄭群艦 Addy Cheng — 證照看板</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --esg:    #0F6E56;
+    --ai:     #534AB7;
+    --pm:     #185FA5;
+    --ie:     #BA7517;
+    --sec:    #993C1D;
+    --lang:   #993556;
+    --med:    #A32D2D;
+    --sports: #3B6D11;
+    --award:  #8B6914;
+    --done-bg:  #EAF3DE; --done-fg:  #27600F;
+    --prog-bg:  #FAEEDA; --prog-fg:  #854F0B;
+    --gray:   #6B6B6B;
+    --border: #E2E2E2;
+    --bg:     #F7F7F5;
+    --card:   #FFFFFF;
+    --text:   #1A1A1A;
+    --muted:  #6B6B6B;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2.5rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+  .avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0F6E56, #534AB7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.02em; }
+  .header-text .sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .header-text .tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .tag {
+    font-size: 11px; padding: 2px 9px; border-radius: 20px;
+    background: #F0F0EE; color: var(--muted); border: 1px solid var(--border);
+  }
+  .updated { margin-left: auto; font-size: 11px; color: var(--muted); text-align: right; }
+
+  /* ── Stats ── */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; padding: 1.5rem 2.5rem;
+  }
+  .stat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.25rem;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat-value { font-size: 28px; font-weight: 600; }
+  .stat-value.green { color: var(--done-fg); }
+  .stat-value.orange { color: var(--prog-fg); }
+
+  /* ── Filters ── */
+  .filters-wrap { padding: 0 2.5rem 1rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fb {
+    font-size: 12px; padding: 6px 14px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); cursor: pointer; transition: all .15s;
+    font-family: inherit;
+  }
+  .fb:hover { border-color: #AAAAAA; color: var(--text); }
+  .fb.active { border-color: var(--active-color, #444); background: var(--active-color, #444); color: #fff; }
+
+  /* ── Grid ── */
+  .grid-wrap { padding: 0 2.5rem 2rem; }
+  .section-title {
+    font-size: 12px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 12px; margin-top: 1.5rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: .875rem 1rem;
+    border-left: 3px solid var(--cat-color, #ccc);
+    display: flex; flex-direction: column; gap: 6px;
+    transition: box-shadow .15s;
+  }
+  .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .card-cat { font-size: 10px; color: var(--cat-color); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-name { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--text); }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 4px; }
+  .card-date { font-size: 11px; color: var(--muted); }
+  .badge {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 10px; white-space: nowrap;
+  }
+  .badge.done { background: var(--done-bg); color: var(--done-fg); }
+  .badge.prog { background: var(--prog-bg); color: var(--prog-fg); }
+
+  /* ── Awards ── */
+  .awards-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  .award-card {
+    background: var(--card); border: 1px solid #E8D8A0;
+    border-radius: 10px; padding: .875rem 1rem;
+    border-left: 3px solid var(--award);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .award-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .award-name { font-size: 13px; font-weight: 500; line-height: 1.45; }
+  .award-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── Footer ── */
+  .footer { padding: 1.5rem 2.5rem; text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+
+  /* hidden */
+  .card.hidden { display: none; }
+
+  @media (max-width: 680px) {
+    .header { padding: 1.25rem 1rem 1rem; }
+    .stats-row { grid-template-columns: repeat(2,1fr); padding: 1rem; }
+    .filters-wrap, .grid-wrap { padding: 0 1rem 1rem; }
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="avatar">AJ</div>
+  <div class="header-text">
+    <h1>鄭群艦　Addy Cheng</h1>
+    <div class="sub">佳龍科技工程股份有限公司 ・ 永續專案課長</div>
+    <div class="tags">
+      <span class="tag">ESG / 淨零碳</span>
+      <span class="tag">AI 應用</span>
+      <span class="tag">護理師跨域</span>
+      <span class="tag">PMP®</span>
+      <span class="tag">Six Sigma GB</span>
+    </div>
+  </div>
+  <div class="updated">資料更新：2026-06-21</div>
+</header>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat">
+    <div class="stat-label">證照總數</div>
+    <div class="stat-value" id="s-total">57</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">已取得</div>
+    <div class="stat-value green" id="s-done">41</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">考取中</div>
+    <div class="stat-value orange" id="s-prog">16</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">類別</div>
+    <div class="stat-value">8</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="filters-wrap">
+  <div class="filters">
+    <button class="fb active" data-cat="all" style="--active-color:#444">全部</button>
+    <button class="fb" data-cat="esg"    style="--active-color:#0F6E56">🌿 ESG 永續</button>
+    <button class="fb" data-cat="ai"     style="--active-color:#534AB7">🤖 AI 人工智慧</button>
+    <button class="fb" data-cat="pm"     style="--active-color:#185FA5">📋 專案管理</button>
+    <button class="fb" data-cat="ie"     style="--active-color:#BA7517">⚙️ 工業工程</button>
+    <button class="fb" data-cat="sec"    style="--active-color:#993C1D">🔐 資訊安全</button>
+    <button class="fb" data-cat="lang"   style="--active-color:#993556">💬 語言</button>
+    <button class="fb" data-cat="med"    style="--active-color:#A32D2D">🏥 醫療護理</button>
+    <button class="fb" data-cat="sports" style="--active-color:#3B6D11">🏸 體育競技</button>
+  </div>
+</div>
+
+<!-- Cards -->
+<div class="grid-wrap">
+  <div class="section-title" id="grid-label">所有證照</div>
+  <div class="grid" id="grid"></div>
+
+  <!-- Awards always visible -->
+  <div class="section-title" id="awards-section">獎項與榮耀</div>
+  <div class="awards-grid">
+    <div class="award-card"><div class="award-icon">🥈</div><div><div class="award-name">TSAA 台灣永續行動獎 銀牌（SDG 07 可負擔能源）</div><div class="award-date">2025/10/07</div></div></div>
+    <div class="award-card"><div class="award-icon">🌿</div><div><div class="award-name">綠色企業環保標章</div><div class="award-date">2025/04/08</div></div></div>
+    <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-name">佳龍科技優秀員工獎</div><div class="award-date">2026/03/26</div></div></div>
+    <div class="award-card"><div class="award-icon">🎙️</div><div><div class="award-name">受邀經濟部 IPAS 能力鑑 Podcast 採訪</div><div class="award-date">2026/04/13</div></div></div>
+    <div class="award-card"><div class="award-icon">🌟</div><div><div class="award-name">IPAS 獲證者名人榜</div><div class="award-date">2026/05/08</div></div></div>
+    <div class="award-card"><div class="award-icon">🎖️</div><div><div class="award-name">桃園市淨零永續頒獎典禮 綠採績優獎牌</div><div class="award-date" style="color:#854F0B">2026/08/04（預定）</div></div></div>
+  </div>
+</div>
+
+<footer class="footer">鄭群艦 Addy Cheng ・ 2026-06-21 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
+
+<script>
+const CAT_COLOR = {
+  esg:'#0F6E56', ai:'#534AB7', pm:'#185FA5',
+  ie:'#BA7517', sec:'#993C1D', lang:'#993556',
+  med:'#A32D2D', sports:'#3B6D11'
+};
+const CAT_LABEL = {
+  esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理',
+  ie:'工業工程', sec:'資訊安全', lang:'語言',
+  med:'醫療護理', sports:'體育競技'
+};
+
+const DATA = [
+  // ESG
+  {c:'esg', n:'COURSERA ESG 證書（Wharton）', d:'2024/05/07', s:'done'},
+  {c:'esg', n:'財團法人保險事業發展中心 永續發展基礎能力測驗', d:'2024/07/15', s:'done'},
+  {c:'esg', n:'工研院 綠領減碳推動人才養成（210小時）', d:'2024/08/14', s:'done'},
+  {c:'esg', n:'IPAS 淨零碳規劃管理師 初級', d:'2024/11/11', s:'done'},
+  {c:'esg', n:'塑膠工業技術發展中心 數位減碳實務工作坊', d:'2025/04/29', s:'done'},
+  {c:'esg', n:'Delta 台達電子 節能管理人員培訓', d:'2026/06/17', s:'done'},
+  {c:'esg', n:'ESCO 節能績效量測與驗證工程師 初級', d:'2026/06/23～24', s:'prog'},
+  {c:'esg', n:'SGS ISO 50001:2018 能源管理系統主導稽核員', d:'2026/06/29', s:'prog'},
+  {c:'esg', n:'經濟部 ISO 50001 能源管理系統標準解析（台北）', d:'2026/07/01', s:'prog'},
+  {c:'esg', n:'經濟部 ISO 50001 能源管理系統運用案例（桃園）', d:'2026/07/01', s:'prog'},
+  {c:'esg', n:'SGS ISO 14067:2018 碳足跡標準主導查證員', d:'2026/07/08～10', s:'prog'},
+  {c:'esg', n:'SGS ISO 14064-1:2018 溫室氣體盤查標準主導查證員', d:'2026/07/10', s:'prog'},
+  {c:'esg', n:'SGS ISO 14068-1:2023 碳中和主導查驗員', d:'2026/08/19～21', s:'prog'},
+  {c:'esg', n:'IPAS 淨零碳規劃管理師 中級', d:'2026/08/22', s:'prog'},
+  // AI (22 entries — synced from Notion CSV export 2026-06-21)
+  {c:'ai', n:'AI 自學證書（Google + AWS）', d:'2025/05/21', s:'done'},
+  {c:'ai', n:'Gemini Certified Educator', d:'2025/05/21', s:'done'},
+  {c:'ai', n:'IPAS AI 應用規劃師 初級', d:'2025/08/16', s:'done'},
+  {c:'ai', n:'資策會 生成式 AI 能力認證', d:'2025/08/17', s:'done'},
+  {c:'ai', n:'經濟部 產業 AI 人才培訓 3日 AI 種子班', d:'2025/09/12', s:'done'},
+  {c:'ai', n:'Microsoft Azure AI-900 人工智慧核心能力', d:'2025/09/29', s:'done'},
+  {c:'ai', n:'Gemini Certified University Student', d:'2025/12/23', s:'done'},
+  {c:'ai', n:'Gemini Certified Faculty', d:'2025/12/23', s:'done'},
+  {c:'ai', n:'台科大 AI for Good 實戰工作坊', d:'2025/12/26', s:'done'},
+  {c:'ai', n:'元智大學 AI 大師在身邊 遠距教學', d:'2026/01/05', s:'done'},
+  {c:'ai', n:'AWS Generative AI Business Skill', d:'2026/01/11', s:'done'},
+  {c:'ai', n:'Taiwan AI Academy AIATC™ 人才認證', d:'2026/03/10', s:'done'},
+  {c:'ai', n:'AI 智慧科技賦能認證', d:'2026/03/17', s:'done'},
+  {c:'ai', n:'經濟部 AI 產業人才培訓（15小時）', d:'2026/03/24', s:'done'},
+  {c:'ai', n:'L2Pro Taiwan AI 時代的專利佈局全攻略', d:'2026/04/25', s:'done'},
+  {c:'ai', n:'L2Pro Taiwan 課程培訓（3小時）', d:'2026/04/25', s:'done'},
+  {c:'ai', n:'資策會 人工智慧工程素養認證', d:'2026/05/17', s:'done'},
+  {c:'ai', n:'Anthropic Claude 課程證書', d:'2026/06/12', s:'done'},
+  {c:'ai', n:'Google 數位人才探索 Cloud 學程', d:'2026/06/25', s:'prog'},
+  {c:'ai', n:'Google 數位人才探索 AI 職場通識學程', d:'2026/06/26', s:'prog'},
+  {c:'ai', n:'Google 數位人才探索 數位行銷學程', d:'2026/06/27', s:'prog'},
+  {c:'ai', n:'IPAS AI 應用規劃師 中級', d:'2026/11/14', s:'prog'},
+  // PM
+  {c:'pm', n:'PMP® 國際專案管理師', d:'2026/02/26', s:'done'},
+  // IE
+  {c:'ie', n:'甲種職業安全衛生業務主管', d:'2025/11/09', s:'done'},
+  {c:'ie', n:'IATF 16949:2016 汽車業品質管理系統內部稽核員', d:'2026/01/29', s:'done'},
+  {c:'ie', n:'Six Sigma Green Belt', d:'2026/08/03', s:'prog'},
+  // Security
+  {c:'sec', n:'Google Cybersecurity Certificate', d:'2026/08/14', s:'prog'},
+  // Language
+  {c:'lang', n:'PVQC 專業英文詞彙能力國際認證', d:'2021/10/08', s:'done'},
+  {c:'lang', n:'多益 600 分', d:'2027/05/03', s:'prog'},
+  // Medical
+  {c:'med', n:'高考護理師執照', d:'2020/09/03', s:'done'},
+  {c:'med', n:'ACLS 高級心臟救命術', d:'2021/10/24', s:'done'},
+  {c:'med', n:'ETTC 急診外傷訓練課程', d:'2021/11/21', s:'done'},
+  {c:'med', n:'衛福部 長期照顧專業人員 Level 1', d:'2024/03/26', s:'done'},
+  {c:'med', n:'樂齡運動健身教練', d:'2024/04/22', s:'done'},
+  {c:'med', n:'Aging ABC 樂齡桌遊健康促進教師 初階', d:'2024/05/04', s:'done'},
+  {c:'med', n:'Aging ABC 樂齡桌遊健康促進教師 進階', d:'2024/05/05', s:'done'},
+  {c:'med', n:'CPR + AED 心肺復甦術及去顫器', d:'2025/06/26', s:'done'},
+  // Sports
+  {c:'sports', n:'中華民國羽球協會 C 級教練', d:'2021/10/03', s:'done'},
+  {c:'sports', n:'全國賽：嘉義諸羅山盃 男雙丁組 16 強', d:'2021', s:'done'},
+  {c:'sports', n:'全國賽：承億盃 社會團體男丁組 8 強', d:'2022', s:'done'},
+  {c:'sports', n:'全國賽：寶元快客盃 男雙 16 強', d:'2024', s:'done'},
+  {c:'sports', n:'全國賽：捷豹盃 25–35y 男雙 16 強', d:'2026', s:'done'},
+];
+
+let currentCat = 'all';
+
+function render() {
+  const grid = document.getElementById('grid');
+  const items = currentCat === 'all' ? DATA : DATA.filter(d => d.c === currentCat);
+  const doneCount = items.filter(d => d.s === 'done').length;
+  const progCount = items.filter(d => d.s === 'prog').length;
+
+  document.getElementById('s-total').textContent = currentCat === 'all' ? DATA.length : items.length;
+  document.getElementById('s-done').textContent  = currentCat === 'all' ? DATA.filter(d=>d.s==='done').length : doneCount;
+  document.getElementById('s-prog').textContent  = currentCat === 'all' ? DATA.filter(d=>d.s==='prog').length : progCount;
+
+  const label = currentCat === 'all' ? '所有證照' : CAT_LABEL[currentCat];
+  document.getElementById('grid-label').textContent = label;
+
+  // Sort: done first, then prog; within each group sort by date desc
+  const sorted = [...items].sort((a,b) => {
+    if (a.s !== b.s) return a.s === 'done' ? -1 : 1;
+    return (b.d || '').localeCompare(a.d || '');
+  });
+
+  grid.innerHTML = sorted.map(d => `
+    <div class="card" style="--cat-color:${CAT_COLOR[d.c]}">
+      <div class="card-cat">${CAT_LABEL[d.c]}</div>
+      <div class="card-name">${d.n}</div>
+      <div class="card-footer">
+        <span class="card-date">${d.d}</span>
+        <span class="badge ${d.s}">${d.s === 'done' ? '已取得' : '考取中'}</span>
+      </div>
+    </div>`).join('');
+
+  // Show/hide awards
+  const showAwards = currentCat === 'all';
+  document.getElementById('awards-section').style.display = showAwards ? '' : 'none';
+  document.querySelector('.awards-grid').style.display = showAwards ? '' : 'none';
+}
+
+document.querySelectorAll('.fb').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
