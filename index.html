@@ -139,6 +139,16 @@
   /* ── Footer ── */
   .footer { padding: 1.5rem 2.5rem; text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
 
+  .card-countdown { margin: 2px 0; }
+  .countdown {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+    background: #FEF3C7; color: #92400E;
+  }
+  .countdown.today {
+    background: #FEE2E2; color: #991B1B;
+  }
+
   /* hidden */
   .card.hidden { display: none; }
 
@@ -201,6 +211,7 @@
     <button class="fb" data-cat="lang"   style="--active-color:#993556">💬 語言</button>
     <button class="fb" data-cat="med"    style="--active-color:#A32D2D">🏥 醫療護理</button>
     <button class="fb" data-cat="sports" style="--active-color:#3B6D11">🏸 體育競技</button>
+    <button class="fb" data-cat="prog"   style="--active-color:#854F0B">⏳ 考取中</button>
   </div>
 </div>
 
@@ -304,36 +315,67 @@ const DATA = [
 
 let currentCat = 'all';
 
+// 解析考試日期，支援範圍格式（取後段）
+function parseExamDate(str) {
+  if (!str) return null;
+  // 範圍：2026/07/08～10 或 2026/06/23～24
+  const rangeMatch = str.match(/(\d{4})\/(\d{2})\/(\d{2})[～~](\d{2})/);
+  if (rangeMatch) return new Date(`${rangeMatch[1]}-${rangeMatch[2]}-${rangeMatch[4]}`);
+  // 一般：2026/08/03
+  const single = str.match(/(\d{4})\/(\d{2})\/(\d{2})/);
+  if (single) return new Date(`${single[1]}-${single[2]}-${single[3]}`);
+  return null;
+}
+
+function countdown(dateStr) {
+  const exam = parseExamDate(dateStr);
+  if (!exam) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((exam - today) / 86400000);
+  if (diff < 0) return '';
+  if (diff === 0) return '<span class="countdown today">今天！</span>';
+  return `<span class="countdown">還有 ${diff} 天</span>`;
+}
+
 function render() {
   const grid = document.getElementById('grid');
-  const items = currentCat === 'all' ? DATA : DATA.filter(d => d.c === currentCat);
-  const doneCount = items.filter(d => d.s === 'done').length;
-  const progCount = items.filter(d => d.s === 'prog').length;
+  const isProg = currentCat === 'prog';
+  const items = currentCat === 'all' ? DATA
+              : isProg ? DATA.filter(d => d.s === 'prog')
+              : DATA.filter(d => d.c === currentCat);
 
+  const allDone = DATA.filter(d=>d.s==='done').length;
+  const allProg = DATA.filter(d=>d.s==='prog').length;
   document.getElementById('s-total').textContent = currentCat === 'all' ? DATA.length : items.length;
-  document.getElementById('s-done').textContent  = currentCat === 'all' ? DATA.filter(d=>d.s==='done').length : doneCount;
-  document.getElementById('s-prog').textContent  = currentCat === 'all' ? DATA.filter(d=>d.s==='prog').length : progCount;
+  document.getElementById('s-done').textContent  = isProg ? 0 : (currentCat === 'all' ? allDone : items.filter(d=>d.s==='done').length);
+  document.getElementById('s-prog').textContent  = currentCat === 'all' ? allProg : items.filter(d=>d.s==='prog').length;
 
-  const label = currentCat === 'all' ? '所有證照' : CAT_LABEL[currentCat];
+  const label = currentCat === 'all' ? '所有證照'
+              : isProg ? '考取中的證照'
+              : CAT_LABEL[currentCat];
   document.getElementById('grid-label').textContent = label;
 
-  // Sort: done first, then prog; within each group sort by date desc
   const sorted = [...items].sort((a,b) => {
     if (a.s !== b.s) return a.s === 'done' ? -1 : 1;
+    const da = parseExamDate(a.d), db = parseExamDate(b.d);
+    if (a.s === 'prog') return (da||0) - (db||0); // 考取中：近的排前面
     return (b.d || '').localeCompare(a.d || '');
   });
 
-  grid.innerHTML = sorted.map(d => `
+  grid.innerHTML = sorted.map(d => {
+    const cd = d.s === 'prog' ? countdown(d.d) : '';
+    return `
     <div class="card" style="--cat-color:${CAT_COLOR[d.c]}">
       <div class="card-cat">${CAT_LABEL[d.c]}</div>
       <div class="card-name">${d.n}</div>
+      ${cd ? `<div class="card-countdown">${cd}</div>` : ''}
       <div class="card-footer">
         <span class="card-date">${d.d}</span>
         <span class="badge ${d.s}">${d.s === 'done' ? '已取得' : '考取中'}</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
-  // Show/hide awards
   const showAwards = currentCat === 'all';
   document.getElementById('awards-section').style.display = showAwards ? '' : 'none';
   document.querySelector('.awards-grid').style.display = showAwards ? '' : 'none';
