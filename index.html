@@ -120,10 +120,10 @@
     transition: box-shadow .15s;
   }
   .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-  .card.has-img { cursor: pointer; }
-  .card.has-img:hover { box-shadow: 0 4px 14px rgba(0,0,0,.13); }
+  .card.has-img, .card.has-pdf { cursor: pointer; }
+  .card.has-img:hover, .card.has-pdf:hover { box-shadow: 0 4px 14px rgba(0,0,0,.13); }
   .card-cat { font-size: 10px; color: var(--cat-color); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 5px; }
-  .card-img-badge { position: absolute; top: 8px; right: 8px; font-size: 16px; line-height: 1; opacity: .75; pointer-events: none; }
+  .card-file-badge { position: absolute; top: 8px; right: 8px; font-size: 16px; line-height: 1; opacity: .75; pointer-events: none; }
   .card { position: relative; }
   .card-name { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--text); }
   .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 4px; }
@@ -370,6 +370,20 @@
   </div>
 </div>
 
+<!-- ── PDF Modal ── -->
+<div class="modal-overlay hidden" id="pdf-modal">
+  <div class="img-modal-box" style="max-width:860px;width:95vw;">
+    <iframe id="pdf-modal-frame" src="" style="width:100%;height:70vh;border:none;border-radius:8px;display:block;"></iframe>
+    <div class="img-modal-footer">
+      <div>
+        <div class="img-modal-name" id="pdf-modal-name"></div>
+        <div class="img-modal-date" id="pdf-modal-date"></div>
+      </div>
+      <button class="img-modal-close-btn" id="close-pdf">關閉</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const CAT_COLOR = {
   esg:'#0F6E56', ai:'#534AB7', pm:'#185FA5',
@@ -394,7 +408,7 @@ const DATA = [
   {c:'esg', n:'工研院 綠領減碳推動人才養成（210小時）', d:'2024/08/14', s:'done', img:'https://drive.google.com/thumbnail?id=1cnxy26Ly42s_WFu-5Sm_7vzBFptkd3Cu&sz=w1200'},
   {c:'esg', n:'IPAS 淨零碳規劃管理師 初級', d:'2024/11/11', s:'done', img:'https://drive.google.com/thumbnail?id=1sydRXcBB_WnIZyVvdhraBBtDymU6-iYe&sz=w1200'},
   {c:'esg', n:'塑膠工業技術發展中心 數位減碳實務工作坊', d:'2025/04/29', s:'done', img:'https://drive.google.com/thumbnail?id=1f1pJF8qwa-PBMPOOcV8AW9MiPHgBXU-w&sz=w1200'},
-  {c:'esg', n:'Delta 台達電子 節能管理人員培訓', d:'2026/06/17', s:'done'},
+  {c:'esg', n:'Delta 台達電子 節能管理人員培訓', d:'2026/06/17', s:'done', pdf:'1WUubP8ghY9u3T929QHFlji0Tv1a9s4fw'},
   {c:'esg', n:'ESCO 節能績效量測與驗證工程師 初級', d:'2026/06/23～24', s:'done', img:'https://drive.google.com/thumbnail?id=1Nt0gB8GJAFI4oaBbT96XCyrQ5UuhnsXd&sz=w1200'},
   {c:'esg', n:'2026商業部門減碳培訓 溫室氣體盤查實戰（台中）', d:'2026/06/22～23', s:'done'},
   {c:'esg', n:'SGS ISO 50001:2018 能源管理系統主導稽核員', d:'2026/06/29', s:'prog'},
@@ -406,34 +420,33 @@ const DATA = [
   {c:'esg', n:'IPAS 淨零碳規劃管理師 中級', d:'2026/08/22', s:'prog'},
   {c:'esg', n:'2026商業部門減碳培訓 溫室氣體盤查實戰（臺南）', d:'2026/06/29～30', s:'prog'},
   // AI
-  {c:'ai', n:'AI 自學證書（Google + AWS）', d:'2025/05/21', s:'done'},
-  {c:'ai', n:'Gemini Certified Educator', d:'2025/05/21', s:'done'},
-  {c:'ai', n:'IPAS AI 應用規劃師 初級', d:'2025/08/16', s:'done'},
+  {c:'ai', n:'AI 自學證書（Google + AWS）', d:'2025/05/21', s:'done', img:'https://drive.google.com/thumbnail?id=1odv7q6em4Kgk-hRbXmmE5NpONqJSXbc-&sz=w1200'},
+  {c:'ai', n:'Gemini Certified Educator', d:'2025/05/21', s:'done', pdf:'13OW72h30NuY05LmH7wUlbt0o4driBT2a'},
+  {c:'ai', n:'IPAS AI 應用規劃師 初級', d:'2025/08/16', s:'done', img:'https://drive.google.com/thumbnail?id=16M3u5W97Sdnuf8ZQXirNUtopgF-t8RWU&sz=w1200'},
   {c:'ai', n:'資策會 生成式 AI 能力認證', d:'2025/08/17', s:'done', img:'https://drive.google.com/thumbnail?id=1Umbw1n3G6Y7JrTY_XaQtjicdHfies46B&sz=w1200'},
   {c:'ai', n:'經濟部 產業 AI 人才培訓 3日 AI 種子班', d:'2025/09/12', s:'done', img:'https://drive.google.com/thumbnail?id=1RIVe28kB-2QDspDCagYRYJT7q-Vpn53U&sz=w1200'},
-  {c:'ai', n:'Microsoft Azure AI-900 人工智慧核心能力', d:'2025/09/29', s:'done'},
-  {c:'ai', n:'Gemini Certified Educator', d:'2025/12/23', s:'done'},
-  {c:'ai', n:'Gemini Certified University Student', d:'2025/12/23', s:'done'},
-  {c:'ai', n:'Gemini Certified Faculty', d:'2025/12/23', s:'done'},
+  {c:'ai', n:'Microsoft Azure AI-900 人工智慧核心能力', d:'2025/09/29', s:'done', pdf:'1PpXn22oohvoTyfD5cVpOIKvtn-MVAjTF'},
+  {c:'ai', n:'Gemini Certified University Student', d:'2025/12/23', s:'done', pdf:'1dd6X2fPkiDilvPSb-mRA2Vn9BukWhSg-'},
+  {c:'ai', n:'Gemini Certified Faculty', d:'2025/12/23', s:'done', img:'https://drive.google.com/thumbnail?id=18LsSNnw103q4Y_Hc6tvQAxw8KR4lnDZb&sz=w1200'},
   {c:'ai', n:'台科大 AI for Good 實戰工作坊', d:'2025/12/26', s:'done', img:'https://drive.google.com/thumbnail?id=1bHTO0Qicm028Wfakw_le8H9Mo4SgsoHO&sz=w1200'},
   {c:'ai', n:'元智大學 AI 大師在身邊 遠距教學', d:'2026/01/05', s:'done', img:'https://drive.google.com/thumbnail?id=1ml_l_trVQetCV_uzO51ws-o-DwN2l7rC&sz=w1200'},
   {c:'ai', n:'AWS Generative AI Business Skill', d:'2026/01/11', s:'done', img:'https://drive.google.com/thumbnail?id=1e5lpqO_Ws5HpeMEobUzDq_aVv5R5YFTW&sz=w1200'},
-  {c:'ai', n:'Taiwan AI Academy AIATC™ 人才認證', d:'2026/03/10', s:'done'},
+  {c:'ai', n:'Taiwan AI Academy AIATC™ 人才認證', d:'2026/03/10', s:'done', pdf:'1qM2JBSxe-i7PDVvl4dUq1ojq2oRchUxg'},
   {c:'ai', n:'AI 智慧科技賦能認證', d:'2026/03/17', s:'done', img:'https://drive.google.com/thumbnail?id=19GqDASqLWPPm_yqTvnEu5k-Gwh22QaIb&sz=w1200'},
-  {c:'ai', n:'經濟部 AI 產業人才培訓（15小時）', d:'2026/03/24', s:'done'},
-  {c:'ai', n:'L2Pro Taiwan AI 時代的專利佈局全攻略', d:'2026/04/25', s:'done'},
-  {c:'ai', n:'L2Pro Taiwan 課程培訓（3小時）', d:'2026/04/25', s:'done'},
-  {c:'ai', n:'資策會 人工智慧工程素養認證', d:'2026/05/17', s:'done'},
-  {c:'ai', n:'Anthropic Claude 課程證書', d:'2026/06/12', s:'done'},
+  {c:'ai', n:'經濟部 AI 產業人才培訓（15小時）', d:'2026/03/24', s:'done', pdf:'1dnZRWGK_FycYDNYbl4ZSnAo6piePIvAW'},
+  {c:'ai', n:'L2Pro Taiwan AI 時代的專利佈局全攻略', d:'2026/04/25', s:'done', pdf:'1oMvLFNfcaJI2bQOCndFuEc7XpE5-CRMU'},
+  {c:'ai', n:'L2Pro Taiwan 課程培訓（3小時）', d:'2026/04/25', s:'done', pdf:'1lqgd__h-ooYQQfS_EwNUdOIa4OApZ7Te'},
+  {c:'ai', n:'資策會 人工智慧工程素養認證', d:'2026/05/17', s:'done', pdf:'1lQX4RlbMpCLADj6DsZyGryCeu7Kg5h-L'},
+  {c:'ai', n:'Anthropic Claude 課程證書', d:'2026/06/12', s:'done', pdf:'1C2QAuOQTjRrnn6S6g8Cpx4jKPzkhYGRM'},
   {c:'ai', n:'Google 數位人才探索 Cloud 學程', d:'2026/06/25', s:'done'},
   {c:'ai', n:'Google 數位人才探索 AI 職場通識學程', d:'2026/06/26', s:'done'},
   {c:'ai', n:'Google 數位人才探索 數位行銷學程', d:'2026/06/27', s:'prog'},
   {c:'ai', n:'IPAS AI 應用規劃師 中級', d:'2026/11/14', s:'prog'},
   // PM
-  {c:'pm', n:'PMP® 國際專案管理師', d:'2026/02/26', s:'done'},
+  {c:'pm', n:'PMP® 國際專案管理師', d:'2026/02/26', s:'done', img:'https://drive.google.com/thumbnail?id=12Tx1udR6KWewOSx22j_r5166sxQM2Agl&sz=w1200'},
   // IE
-  {c:'ie', n:'甲種職業安全衛生業務主管', d:'2025/11/09', s:'done'},
-  {c:'ie', n:'IATF 16949:2016 汽車業品質管理系統內部稽核員', d:'2026/01/29', s:'done'},
+  {c:'ie', n:'甲種職業安全衛生業務主管', d:'2025/11/09', s:'done', pdf:'1Vy9aSq9m-cKSC1WeU7rQKI4qlhRVIQIK'},
+  {c:'ie', n:'IATF 16949:2016 汽車業品質管理系統內部稽核員', d:'2026/01/29', s:'done', pdf:'1EXr5XZ2M2297gWVEEkpde8rgoRSRxP1Y'},
   {c:'ie', n:'Six Sigma Green Belt', d:'2027/02/28', s:'prog'},
   // Security
   {c:'sec', n:'Google Cybersecurity Certificate', d:'2026/08/14', s:'prog'},
@@ -508,14 +521,17 @@ function render() {
   grid.innerHTML = sorted.map(d => {
     const cd = d.s === 'prog' ? countdown(d.d) : '';
     const hasImg   = !!d.img;
-    const imgBadge = hasImg ? '<span class="card-img-badge" title="點擊查看證照圖片">📷</span>' : '';
-    const imgClass = hasImg ? ' has-img' : '';
+    const hasPdf   = !!d.pdf && !d.img;
+    const fileBadge = hasImg ? '<span class="card-file-badge" title="點擊查看證照圖片">📷</span>'
+                    : hasPdf ? '<span class="card-file-badge" title="點擊查看證照 PDF">📄</span>' : '';
+    const fileClass = hasImg ? ' has-img' : hasPdf ? ' has-pdf' : '';
     const safeImg  = (d.img || '').replace(/"/g, '&quot;');
+    const safePdf  = (d.pdf || '').replace(/"/g, '&quot;');
     const safeName = d.n.replace(/"/g, '&quot;');
     return `
-    <div class="card${imgClass}" style="--cat-color:${CAT_COLOR[d.c]}"
-         data-img="${safeImg}" data-name="${safeName}" data-date="${d.d}">
-      <div class="card-cat">${CAT_LABEL[d.c]}${imgBadge}</div>
+    <div class="card${fileClass}" style="--cat-color:${CAT_COLOR[d.c]}"
+         data-img="${safeImg}" data-pdf="${safePdf}" data-name="${safeName}" data-date="${d.d}">
+      <div class="card-cat">${CAT_LABEL[d.c]}${fileBadge}</div>
       <div class="card-name">${d.n}</div>
       ${cd ? `<div class="card-countdown">${cd}</div>` : ''}
       <div class="card-footer">
@@ -542,22 +558,31 @@ document.querySelectorAll('.fb').forEach(btn => {
 
 // ── Image Modal (event delegation) ──
 document.getElementById('grid').addEventListener('click', e => {
-  const card = e.target.closest('.card.has-img');
+  const card = e.target.closest('.card.has-img, .card.has-pdf');
   if (!card) return;
-  const img  = card.dataset.img;
   const name = card.dataset.name;
   const date = card.dataset.date;
-  if (!img) return;
 
-  const imgEl = document.getElementById('img-modal-img');
-  const errEl = document.getElementById('img-modal-err');
-  imgEl.style.display = 'block';
-  errEl.style.display = 'none';
-  imgEl.onerror = () => { imgEl.style.display = 'none'; errEl.style.display = 'block'; };
-  imgEl.src = img;
-  document.getElementById('img-modal-name').textContent = name;
-  document.getElementById('img-modal-date').textContent = date;
-  document.getElementById('img-modal').classList.remove('hidden');
+  if (card.classList.contains('has-img')) {
+    const img = card.dataset.img;
+    if (!img) return;
+    const imgEl = document.getElementById('img-modal-img');
+    const errEl = document.getElementById('img-modal-err');
+    imgEl.style.display = 'block';
+    errEl.style.display = 'none';
+    imgEl.onerror = () => { imgEl.style.display = 'none'; errEl.style.display = 'block'; };
+    imgEl.src = img;
+    document.getElementById('img-modal-name').textContent = name;
+    document.getElementById('img-modal-date').textContent = date;
+    document.getElementById('img-modal').classList.remove('hidden');
+  } else if (card.classList.contains('has-pdf')) {
+    const pid = card.dataset.pdf;
+    if (!pid) return;
+    document.getElementById('pdf-modal-frame').src = `https://drive.google.com/file/d/${pid}/preview`;
+    document.getElementById('pdf-modal-name').textContent = name;
+    document.getElementById('pdf-modal-date').textContent = date;
+    document.getElementById('pdf-modal').classList.remove('hidden');
+  }
 });
 
 function closeImgModal() {
@@ -567,6 +592,15 @@ function closeImgModal() {
 document.getElementById('close-img').addEventListener('click', closeImgModal);
 document.getElementById('img-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('img-modal')) closeImgModal();
+});
+
+function closePdfModal() {
+  document.getElementById('pdf-modal').classList.add('hidden');
+  document.getElementById('pdf-modal-frame').src = '';
+}
+document.getElementById('close-pdf').addEventListener('click', closePdfModal);
+document.getElementById('pdf-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('pdf-modal')) closePdfModal();
 });
 
 // ── Chart Modal ──
