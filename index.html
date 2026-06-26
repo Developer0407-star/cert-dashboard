@@ -602,9 +602,12 @@ function buildChartData() {
     .sort((a,b) => a.parsed - b.parsed);
 
   const monthly = {};
+  const monthlyNames = {};
   dated.forEach(d => {
     const key = `${d.parsed.getFullYear()}/${String(d.parsed.getMonth()+1).padStart(2,'0')}`;
     monthly[key] = (monthly[key] || 0) + 1;
+    if (!monthlyNames[key]) monthlyNames[key] = [];
+    monthlyNames[key].push(d.n);
   });
   let cum = 0;
   const timeLabels = [], timeValues = [];
@@ -617,14 +620,14 @@ function buildChartData() {
   const catData = {};
   done.forEach(d => { catData[d.c] = (catData[d.c] || 0) + 1; });
 
-  return { timeLabels, timeValues, datedCount: dated.length, catData };
+  return { timeLabels, timeValues, datedCount: dated.length, catData, monthlyNames };
 }
 
 function renderCharts() {
-  if (chartsReady) return;
+  if (chartsReady) return; // data is static; only render once
   chartsReady = true;
 
-  const { timeLabels, timeValues, datedCount, catData } = buildChartData();
+  const { timeLabels, timeValues, datedCount, catData, monthlyNames } = buildChartData();
   document.getElementById('chart-dated-count').textContent = datedCount;
 
   // Timeline area chart
@@ -656,6 +659,12 @@ function renderCharts() {
           callbacks: {
             title: ctx => ctx[0].label,
             label: ctx => `累積取得：${ctx.parsed.y} 張`,
+            afterBody: ctx => {
+              const names = monthlyNames[ctx[0].label] || [];
+              if (!names.length) return [];
+              return ['', '本月取得：',
+                ...names.map(n => '  ' + (n.length > 26 ? n.slice(0,26) + '…' : n))];
+            },
           }
         }
       },
