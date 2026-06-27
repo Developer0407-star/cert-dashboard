@@ -141,38 +141,27 @@
     padding: 1.5rem 2.5rem 0;
   }
   .about-inner {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    display: grid; grid-template-columns: 3fr 2fr;
+    gap: 0;
     background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.5rem;
+    border-radius: 14px; overflow: hidden;
   }
-  .about-left { display: flex; flex-direction: column; gap: 14px; }
+  .about-left {
+    display: flex; flex-direction: column; gap: 16px;
+    padding: 1.5rem; border-right: 1px solid var(--border);
+  }
   .about-title {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px;
   }
-  .about-summary {
-    font-size: 13.5px; line-height: 1.75; color: var(--text);
-  }
-  .about-kpi {
-    display: flex; gap: 12px; flex-wrap: wrap;
-  }
+  .about-summary { font-size: 13.5px; line-height: 1.75; color: var(--text); }
+  .about-kpi { display: flex; gap: 10px; flex-wrap: wrap; }
   .kpi-item {
     background: #F0F0EE; border-radius: 10px; padding: 8px 14px; text-align: center;
+    flex: 1; min-width: 80px;
   }
   .kpi-num { font-size: 22px; font-weight: 700; color: var(--done-fg); line-height: 1.2; }
   .kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
-  .resume-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-  .resume-btn {
-    font-size: 12px; padding: 7px 16px; border-radius: 20px;
-    border: 1.5px solid var(--border); background: var(--card);
-    color: var(--text); cursor: pointer; font-family: inherit; font-weight: 500;
-    text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
-    transition: all .15s;
-  }
-  .resume-btn:hover { border-color: #534AB7; color: #534AB7; }
-  .about-divider { width: 1px; background: var(--border); margin: -1.5rem 0; }
-  .about-right { display: flex; flex-direction: column; gap: 12px; }
   .skill-group { }
   .skill-group-label {
     font-size: 10px; font-weight: 700; text-transform: uppercase;
@@ -184,11 +173,31 @@
     background: #F0F0EE; color: var(--text); border: 1px solid var(--border);
   }
   .skill-tag.accent { background: #EEF0FB; color: #534AB7; border-color: #C5C2ED; }
+  .about-right {
+    display: flex; flex-direction: column;
+    padding: 1.5rem 1.25rem; gap: 10px; background: #FAFAF8;
+  }
+  .resume-panel-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px;
+  }
+  .resume-card {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: .875rem 1rem;
+    cursor: pointer; text-decoration: none; color: var(--text);
+    transition: box-shadow .15s, border-color .15s; flex: 1;
+  }
+  .resume-card:hover { border-color: #534AB7; box-shadow: 0 2px 10px rgba(83,74,183,.12); }
+  .resume-card-icon { font-size: 24px; flex-shrink: 0; }
+  .resume-card-label { font-size: 13px; font-weight: 600; line-height: 1.3; }
+  .resume-card-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   @media (max-width: 680px) {
     .about-wrap { padding: 1rem 1rem 0; }
     .about-inner { grid-template-columns: 1fr; }
-    .about-divider { display: none; }
+    .about-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .about-right { background: var(--card); }
   }
 
   /* ── Education + Work ── */
@@ -419,57 +428,63 @@
         <div class="kpi-item"><div class="kpi-num">58%</div><div class="kpi-label">行政效率提升</div></div>
         <div class="kpi-item"><div class="kpi-num">40+</div><div class="kpi-label">跨域認證</div></div>
       </div>
-      <div>
-        <div class="about-title" style="margin-bottom:8px">📄 查看履歷</div>
-        <div class="resume-btns">
-          <a class="resume-btn" href="#" onclick="openResume('resume-cn.pdf','中文履歷');return false;">📋 中文履歷</a>
-          <a class="resume-btn" href="#" onclick="openResume('resume-en.pdf','English Resume');return false;">🌐 English Resume</a>
-          <a class="resume-btn" href="#" onclick="openResume('resume-bio.pdf','104 自傳');return false;">📝 104 自傳</a>
+      <div id="bio-skills" style="display:flex;flex-direction:column;gap:10px">
+        <div class="skill-group">
+          <div class="skill-group-label">⚙️ 工業工程</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Six Sigma Green Belt</span><span class="skill-tag">KPI 設定</span>
+            <span class="skill-tag">製程改善</span><span class="skill-tag">瓶頸分析</span>
+            <span class="skill-tag">IATF 16949</span><span class="skill-tag">ERP / MES</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">🌿 ESG / 能源</div>
+          <div class="skill-tags">
+            <span class="skill-tag">ISO 14064-1 碳盤查</span><span class="skill-tag">ISO 14067 碳足跡</span>
+            <span class="skill-tag">ISO 50001 能源管理</span><span class="skill-tag">EHS 管理</span>
+            <span class="skill-tag">ESCO 節能驗證</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">🤖 AI / 數位</div>
+          <div class="skill-tags">
+            <span class="skill-tag accent">IPAS AI 應用規劃師</span><span class="skill-tag accent">Azure AI-900</span>
+            <span class="skill-tag accent">Notion 自動化</span><span class="skill-tag accent">Gemini</span>
+            <span class="skill-tag accent">Google Cloud</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">📋 專案管理</div>
+          <div class="skill-tags">
+            <span class="skill-tag">PMP®</span><span class="skill-tag">跨部門協作</span>
+            <span class="skill-tag">里程碑管理</span><span class="skill-tag">風險管理</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="about-divider"></div>
-    <div class="about-right" id="bio-skills">
-      <div class="skill-group">
-        <div class="skill-group-label">⚙️ 工業工程</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Six Sigma Green Belt</span>
-          <span class="skill-tag">KPI 設定</span>
-          <span class="skill-tag">製程改善</span>
-          <span class="skill-tag">瓶頸分析</span>
-          <span class="skill-tag">IATF 16949</span>
-          <span class="skill-tag">ERP / MES</span>
+    <div class="about-right">
+      <div class="resume-panel-title">📄 查看 / 下載履歷</div>
+      <a class="resume-card" href="#" onclick="openResume('resume-cn.pdf','中文履歷');return false;">
+        <div class="resume-card-icon">📋</div>
+        <div>
+          <div class="resume-card-label">中文履歷</div>
+          <div class="resume-card-sub">LinkedIn 版 · 含獲獎紀錄與代表證照</div>
         </div>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">🌿 ESG / 能源</div>
-        <div class="skill-tags">
-          <span class="skill-tag">ISO 14064-1 碳盤查</span>
-          <span class="skill-tag">ISO 14067 碳足跡</span>
-          <span class="skill-tag">ISO 50001 能源管理</span>
-          <span class="skill-tag">EHS 管理</span>
-          <span class="skill-tag">ESCO 節能驗證</span>
+      </a>
+      <a class="resume-card" href="#" onclick="openResume('resume-en.pdf','英文履歷');return false;">
+        <div class="resume-card-icon">🌐</div>
+        <div>
+          <div class="resume-card-label">英文履歷</div>
+          <div class="resume-card-sub">LinkedIn EN · ATS 格式優化版</div>
         </div>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">🤖 AI / 數位</div>
-        <div class="skill-tags">
-          <span class="skill-tag accent">IPAS AI 應用規劃師</span>
-          <span class="skill-tag accent">Azure AI-900</span>
-          <span class="skill-tag accent">Notion 自動化</span>
-          <span class="skill-tag accent">Gemini</span>
-          <span class="skill-tag accent">Google Cloud</span>
+      </a>
+      <a class="resume-card" href="#" onclick="openResume('resume-bio.pdf','個人自傳');return false;">
+        <div class="resume-card-icon">📝</div>
+        <div>
+          <div class="resume-card-label">個人自傳</div>
+          <div class="resume-card-sub">完整職涯脈絡 · IE × ESG × AI 跨域</div>
         </div>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-label">📋 專案管理</div>
-        <div class="skill-tags">
-          <span class="skill-tag">PMP®</span>
-          <span class="skill-tag">跨部門協作</span>
-          <span class="skill-tag">里程碑管理</span>
-          <span class="skill-tag">風險管理</span>
-        </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
