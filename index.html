@@ -136,6 +136,61 @@
   .badge.prog { background: var(--prog-bg); color: var(--prog-fg); }
 
 
+  /* ── About Me ── */
+  .about-wrap {
+    padding: 1.5rem 2.5rem 0;
+  }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.5rem;
+  }
+  .about-left { display: flex; flex-direction: column; gap: 14px; }
+  .about-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px;
+  }
+  .about-summary {
+    font-size: 13.5px; line-height: 1.75; color: var(--text);
+  }
+  .about-kpi {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .kpi-item {
+    background: #F0F0EE; border-radius: 10px; padding: 8px 14px; text-align: center;
+  }
+  .kpi-num { font-size: 22px; font-weight: 700; color: var(--done-fg); line-height: 1.2; }
+  .kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .resume-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .resume-btn {
+    font-size: 12px; padding: 7px 16px; border-radius: 20px;
+    border: 1.5px solid var(--border); background: var(--card);
+    color: var(--text); cursor: pointer; font-family: inherit; font-weight: 500;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+    transition: all .15s;
+  }
+  .resume-btn:hover { border-color: #534AB7; color: #534AB7; }
+  .about-divider { width: 1px; background: var(--border); margin: -1.5rem 0; }
+  .about-right { display: flex; flex-direction: column; gap: 12px; }
+  .skill-group { }
+  .skill-group-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; color: var(--muted); margin-bottom: 6px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .skill-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: #F0F0EE; color: var(--text); border: 1px solid var(--border);
+  }
+  .skill-tag.accent { background: #EEF0FB; color: #534AB7; border-color: #C5C2ED; }
+
+  @media (max-width: 680px) {
+    .about-wrap { padding: 1rem 1rem 0; }
+    .about-inner { grid-template-columns: 1fr; }
+    .about-divider { display: none; }
+  }
+
   /* ── Education + Work ── */
   .edu-work-wrap {
     display: grid; grid-template-columns: 1fr 1fr;
@@ -350,6 +405,74 @@
   </div>
   <div class="updated">資料更新：2026-06-26</div>
 </header>
+
+<!-- About Me -->
+<div class="about-wrap">
+  <div class="about-inner">
+    <div class="about-left">
+      <div>
+        <div class="about-title">👤 關於我</div>
+        <div class="about-summary" id="bio-text">中原大學工業與系統工程碩士（在職進修，預計 2027/06 畢業），護理師跨域轉職，以 <strong>IE × ESG × AI</strong> 三軸驅動製造業永續工程。持有 PMP®、ISO 三系統主導查證員（14064-1 / 14067 / 50001）、Six Sigma Green Belt，高壓急重症開刀房歷練的零失誤 SOP 執行力，是切入智能製造與 IE 改善場域的核心優勢。</div>
+      </div>
+      <div class="about-kpi">
+        <div class="kpi-item"><div class="kpi-num">100萬</div><div class="kpi-label">年省顧問費</div></div>
+        <div class="kpi-item"><div class="kpi-num">58%</div><div class="kpi-label">行政效率提升</div></div>
+        <div class="kpi-item"><div class="kpi-num">40+</div><div class="kpi-label">跨域認證</div></div>
+      </div>
+      <div>
+        <div class="about-title" style="margin-bottom:8px">📄 查看履歷</div>
+        <div class="resume-btns">
+          <a class="resume-btn" href="#" onclick="openResume('resume-cn.pdf','中文履歷');return false;">📋 中文履歷</a>
+          <a class="resume-btn" href="#" onclick="openResume('resume-en.pdf','English Resume');return false;">🌐 English Resume</a>
+          <a class="resume-btn" href="#" onclick="openResume('resume-bio.pdf','104 自傳');return false;">📝 104 自傳</a>
+        </div>
+      </div>
+    </div>
+    <div class="about-divider"></div>
+    <div class="about-right" id="bio-skills">
+      <div class="skill-group">
+        <div class="skill-group-label">⚙️ 工業工程</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Six Sigma Green Belt</span>
+          <span class="skill-tag">KPI 設定</span>
+          <span class="skill-tag">製程改善</span>
+          <span class="skill-tag">瓶頸分析</span>
+          <span class="skill-tag">IATF 16949</span>
+          <span class="skill-tag">ERP / MES</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">🌿 ESG / 能源</div>
+        <div class="skill-tags">
+          <span class="skill-tag">ISO 14064-1 碳盤查</span>
+          <span class="skill-tag">ISO 14067 碳足跡</span>
+          <span class="skill-tag">ISO 50001 能源管理</span>
+          <span class="skill-tag">EHS 管理</span>
+          <span class="skill-tag">ESCO 節能驗證</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">🤖 AI / 數位</div>
+        <div class="skill-tags">
+          <span class="skill-tag accent">IPAS AI 應用規劃師</span>
+          <span class="skill-tag accent">Azure AI-900</span>
+          <span class="skill-tag accent">Notion 自動化</span>
+          <span class="skill-tag accent">Gemini</span>
+          <span class="skill-tag accent">Google Cloud</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">📋 專案管理</div>
+        <div class="skill-tags">
+          <span class="skill-tag">PMP®</span>
+          <span class="skill-tag">跨部門協作</span>
+          <span class="skill-tag">里程碑管理</span>
+          <span class="skill-tag">風險管理</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Education + Work -->
 <div class="edu-work-wrap">
@@ -977,6 +1100,14 @@ function renderCharts() {
        ${catLabels[i]}：${catValues[i]} 張
      </div>`
   ).join('');
+}
+
+// ── Resume PDF preview ──
+function openResume(file, name) {
+  document.getElementById('pdf-modal-frame').src = file;
+  document.getElementById('pdf-modal-name').textContent = name;
+  document.getElementById('pdf-modal-date').textContent = '';
+  document.getElementById('pdf-modal').classList.remove('hidden');
 }
 
 // ── Awards + Edu/Work click handlers ──
