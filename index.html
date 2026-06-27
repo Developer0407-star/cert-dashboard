@@ -47,11 +47,11 @@
     gap: 1.5rem;
   }
   .avatar {
-    width: 60px; height: 60px;
+    width: 64px; height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, #0F6E56, #534AB7);
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 600; color: #fff;
+    font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.04em;
     flex-shrink: 0;
   }
   .header-text h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.02em; }
@@ -135,7 +135,59 @@
   .badge.done { background: var(--done-bg); color: var(--done-fg); }
   .badge.prog { background: var(--prog-bg); color: var(--prog-fg); }
 
-  /* ── Awards ── */
+
+  /* ── Education + Work ── */
+  .edu-work-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; padding: 1.5rem 2.5rem 0;
+  }
+  .section-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.25rem;
+  }
+  .section-box-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .timeline-btn {
+    font-size: 11px; padding: 3px 12px; border-radius: 20px;
+    border: 1.5px solid #534AB7; background: #fff; color: #534AB7;
+    cursor: pointer; font-family: inherit; font-weight: 500; transition: all .15s;
+  }
+  .timeline-btn:hover { background: #534AB7; color: #fff; }
+  .edu-item, .work-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer; border-radius: 6px; transition: background .12s;
+    position: relative;
+  }
+  .edu-item:last-child, .work-item:last-child { border-bottom: none; }
+  .edu-item:hover, .work-item:hover { background: #F7F7F5; }
+  .edu-item.has-img, .work-item.has-img { cursor: pointer; }
+  .item-dot {
+    width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+  }
+  .item-main { flex: 1; min-width: 0; }
+  .item-school { font-size: 13px; font-weight: 500; line-height: 1.4; }
+  .item-dept { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .item-period { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .item-badge {
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    white-space: nowrap; align-self: center;
+  }
+  .item-badge.studying { background: #FAEEDA; color: #854F0B; }
+  .item-badge.done { background: var(--done-bg); color: var(--done-fg); }
+  .item-file-badge { font-size: 14px; position: absolute; top: 8px; right: 4px; opacity: .7; }
+
+  /* ── Awards (above stats) ── */
+  .awards-wrap { padding: 1.25rem 2.5rem 0; }
+  .awards-section-title {
+    font-size: 12px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .awards-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .awards-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 10px;
@@ -145,13 +197,36 @@
     border-radius: 10px; padding: .875rem 1rem;
     border-left: 3px solid var(--award);
     display: flex; align-items: flex-start; gap: 10px;
+    position: relative; transition: box-shadow .15s;
   }
+  .award-card.has-img, .award-card.has-pdf { cursor: pointer; }
+  .award-card.has-img:hover, .award-card.has-pdf:hover { box-shadow: 0 4px 14px rgba(0,0,0,.13); }
   .award-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
   .award-name { font-size: 13px; font-weight: 500; line-height: 1.45; }
   .award-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .award-ext-link {
+    font-size: 11px; color: #534AB7; text-decoration: none; margin-top: 4px; display: inline-block;
+  }
+  .award-ext-link:hover { text-decoration: underline; }
+  .award-file-badge { position: absolute; top: 8px; right: 8px; font-size: 14px; opacity: .7; pointer-events: none; }
+
+  /* ── Timeline Modal ── */
+  .timeline-modal-box {
+    background: #fff; border-radius: 14px;
+    max-width: 820px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 16px 48px rgba(0,0,0,.22);
+    animation: mSlideUp .18s ease;
+  }
+  .timeline-chart-wrap { padding: 1rem 1.5rem 1.5rem; }
 
   /* ── Footer ── */
   .footer { padding: 1.5rem 2.5rem; text-align: center; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+
+  @media (max-width: 680px) {
+    .edu-work-wrap { grid-template-columns: 1fr; padding: 1rem; }
+    .awards-wrap { padding: 1rem 1rem 0; }
+  }
 
   .card-countdown { margin: 2px 0; }
   .countdown {
@@ -260,20 +335,151 @@
 
 <!-- Header -->
 <header class="header">
-  <div class="avatar">AJ</div>
+  <div class="avatar">Addy</div>
   <div class="header-text">
-    <h1>鄭群艦　Addy Cheng</h1>
+    <h1>鄭群艦　CYUN JIAN CHENG</h1>
     <div class="sub">佳龍科技工程股份有限公司 ・ 永續專案課長</div>
     <div class="tags">
       <span class="tag">ESG / 淨零碳</span>
       <span class="tag">AI 應用</span>
       <span class="tag">護理師跨域</span>
       <span class="tag">PMP®</span>
-      <span class="tag">Six Sigma GB</span>
+      <span class="tag">Six Sigma</span>
+      <span class="tag">工業與系統工程</span>
     </div>
   </div>
   <div class="updated">資料更新：2026-06-26</div>
 </header>
+
+<!-- Education + Work -->
+<div class="edu-work-wrap">
+  <!-- Education -->
+  <div class="section-box">
+    <div class="section-box-title">🎓 學歷</div>
+    <div class="edu-item has-img" data-img="https://drive.google.com/thumbnail?id=1kTJoTHyU_LgtcBNNZy2kI8jhNZ47sFdc&sz=w1200" data-name="輔英科技大學 護理科" data-date="2015/09 ～ 2020/06">
+      <div class="item-dot" style="background:#A32D2D"></div>
+      <div class="item-main">
+        <div class="item-school">輔英科技大學</div>
+        <div class="item-dept">護理科（副學士）</div>
+        <div class="item-period">2015/09 ～ 2020/06</div>
+      </div>
+      <span class="item-badge done">畢業</span>
+      <span class="item-file-badge">📷</span>
+    </div>
+    <div class="edu-item has-img" data-img="https://drive.google.com/thumbnail?id=1MqCSwQocWnTgmI6hATJ7cFlE-p0utgir&sz=w1200" data-name="長庚科技大學 護理系" data-date="2020/09 ～ 2022/06">
+      <div class="item-dot" style="background:#A32D2D"></div>
+      <div class="item-main">
+        <div class="item-school">長庚科技大學</div>
+        <div class="item-dept">護理系（學士）</div>
+        <div class="item-period">2020/09 ～ 2022/06</div>
+      </div>
+      <span class="item-badge done">畢業</span>
+      <span class="item-file-badge">📷</span>
+    </div>
+    <div class="edu-item" style="cursor:default">
+      <div class="item-dot" style="background:#185FA5"></div>
+      <div class="item-main">
+        <div class="item-school">中原大學</div>
+        <div class="item-dept">工業與系統工程系（碩士）</div>
+        <div class="item-period">2025/09 ～ 2027/06（預計）</div>
+      </div>
+      <span class="item-badge studying">在學中</span>
+    </div>
+  </div>
+  <!-- Work + Timeline -->
+  <div class="section-box">
+    <div class="section-box-title">
+      💼 工作經歷 &amp; 進修歷程
+      <button class="timeline-btn" id="open-timeline">📅 時間軸</button>
+    </div>
+    <div class="work-item has-img" data-img="https://drive.google.com/thumbnail?id=1Yh4J8HMbAa3u6cGN8CJIvimYCnCInUCW&sz=w1200" data-name="中國醫藥大學急重症開刀房 護理師" data-date="2022/06/06 ～ 2024/06/06">
+      <div class="item-dot" style="background:#A32D2D"></div>
+      <div class="item-main">
+        <div class="item-school">中國醫藥大學附設醫院</div>
+        <div class="item-dept">急重症開刀房 護理師</div>
+        <div class="item-period">2022/06/06 ～ 2024/06/06</div>
+      </div>
+      <span class="item-badge done">結束</span>
+      <span class="item-file-badge">📷</span>
+    </div>
+    <div class="work-item has-img" data-img="https://drive.google.com/thumbnail?id=1TdK5G3nfxpmT80u9Fwpekgd47WFVTgNJ&sz=w1200" data-name="財團法人工業技術研究院 中興院區 ESG 進修" data-date="2024/06/25 ～ 2024/08/14">
+      <div class="item-dot" style="background:#0F6E56"></div>
+      <div class="item-main">
+        <div class="item-school">財團法人工業技術研究院</div>
+        <div class="item-dept">中興院區（總部）ESG 永續專業進修</div>
+        <div class="item-period">2024/06/25 ～ 2024/08/14</div>
+      </div>
+      <span class="item-badge done">結束</span>
+      <span class="item-file-badge">📷</span>
+    </div>
+    <div class="work-item has-img" data-img="https://drive.google.com/thumbnail?id=1DQix_myR4FeEQfHmEx3g9d1e-qCLWJL4&sz=w1200" data-name="佳龍科技工程股份有限公司 永續專案課長" data-date="2024/09/18 ～ 至今">
+      <div class="item-dot" style="background:#0F6E56"></div>
+      <div class="item-main">
+        <div class="item-school">佳龍科技工程股份有限公司</div>
+        <div class="item-dept">永續專案課長</div>
+        <div class="item-period">2024/09/18 ～ 至今</div>
+      </div>
+      <span class="item-badge studying">在職中</span>
+      <span class="item-file-badge">📷</span>
+    </div>
+  </div>
+</div>
+
+<!-- Awards -->
+<div class="awards-wrap">
+  <div class="awards-section-title">🏆 獎項與榮耀</div>
+  <div class="awards-grid" id="awards-grid">
+    <div class="award-card has-img" data-img="https://drive.google.com/thumbnail?id=1q5MdQZVMLwQ9mkmqNHdu0hzF3AatGdu2&sz=w1200" data-name="TSAA 台灣永續行動獎 銀牌" data-date="2025/10/07">
+      <div class="award-icon">🥈</div>
+      <div>
+        <div class="award-name">TSAA 台灣永續行動獎 銀牌（SDG 07 可負擔能源）</div>
+        <div class="award-date">2025/10/07</div>
+      </div>
+      <span class="award-file-badge">📷</span>
+    </div>
+    <div class="award-card has-img" data-img="https://drive.google.com/thumbnail?id=1elV951M4Dx46mzUdYUQ2FPNTWV1Te1-I&sz=w1200" data-name="2025 綠色企業環保標章" data-date="2025">
+      <div class="award-icon">🌿</div>
+      <div>
+        <div class="award-name">2025 年度榮獲綠色企業環保標章</div>
+        <div class="award-date">2025</div>
+      </div>
+      <span class="award-file-badge">📷</span>
+    </div>
+    <div class="award-card has-img" data-img="https://drive.google.com/thumbnail?id=1MIRwY1kWL4eToz2TJXc-4SD3hg6t3z-j&sz=w1200" data-name="佳龍科技優秀員工獎" data-date="2026/03/26">
+      <div class="award-icon">🏆</div>
+      <div>
+        <div class="award-name">佳龍科技優秀員工獎</div>
+        <div class="award-date">2026/03/26</div>
+      </div>
+      <span class="award-file-badge">📷</span>
+    </div>
+    <div class="award-card has-img" data-img="https://drive.google.com/thumbnail?id=1GTGm32KpWu1uScdVP2JIl5ot4jRD-bLh&sz=w1200" data-name="受邀經濟部 IPAS 能力鑑定 Podcast 採訪" data-date="2026/04/13">
+      <div class="award-icon">🎙️</div>
+      <div>
+        <div class="award-name">受邀經濟部 IPAS 能力鑑定 Podcast 採訪</div>
+        <div class="award-date">2026/04/13</div>
+      </div>
+      <span class="award-file-badge">📷</span>
+    </div>
+    <div class="award-card has-pdf" data-pdf="1je3wNJS0ayC16Row2uA5XUQjFAEDnpQq" data-name="IPAS 獲證者名人榜" data-date="2026/05/08">
+      <div class="award-icon">🌟</div>
+      <div>
+        <div class="award-name">IPAS 獲證者名人榜</div>
+        <div class="award-date">2026/05/08</div>
+        <a class="award-ext-link" href="https://ipd.nat.gov.tw/ipas/elite-story-museum/certified-talent/11ceecde72d54e3899a822e0666c78d3" target="_blank" onclick="event.stopPropagation()">🔗 查看公開頁面</a>
+      </div>
+      <span class="award-file-badge">📄</span>
+    </div>
+    <div class="award-card has-img" data-img="https://drive.google.com/thumbnail?id=1r8qZyLB3J7VKGQSELSJcRqaEDLoLhR_H&sz=w1200" data-name="桃園市淨零永續頒獎典禮 綠採績優獎牌" data-date="2026/08/04（預定）">
+      <div class="award-icon">🎖️</div>
+      <div>
+        <div class="award-name">桃園市淨零永續頒獎典禮 綠採績優獎牌</div>
+        <div class="award-date" style="color:#854F0B">2026/08/04（預定）</div>
+      </div>
+      <span class="award-file-badge">📷</span>
+    </div>
+  </div>
+</div>
 
 <!-- Stats -->
 <div class="stats-row">
@@ -317,15 +523,6 @@
   <div class="section-title" id="grid-label">所有證照</div>
   <div class="grid" id="grid"></div>
 
-  <div class="section-title" id="awards-section">獎項與榮耀</div>
-  <div class="awards-grid">
-    <div class="award-card"><div class="award-icon">🥈</div><div><div class="award-name">TSAA 台灣永續行動獎 銀牌（SDG 07 可負擔能源）</div><div class="award-date">2025/10/07</div></div></div>
-    <div class="award-card"><div class="award-icon">🌿</div><div><div class="award-name">綠色企業環保標章</div><div class="award-date">2025/04/08</div></div></div>
-    <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-name">佳龍科技優秀員工獎</div><div class="award-date">2026/03/26</div></div></div>
-    <div class="award-card"><div class="award-icon">🎙️</div><div><div class="award-name">受邀經濟部 IPAS 能力鑑 Podcast 採訪</div><div class="award-date">2026/04/13</div></div></div>
-    <div class="award-card"><div class="award-icon">🌟</div><div><div class="award-name">IPAS 獲證者名人榜</div><div class="award-date">2026/05/08</div></div></div>
-    <div class="award-card"><div class="award-icon">🎖️</div><div><div class="award-name">桃園市淨零永續頒獎典禮 綠採績優獎牌</div><div class="award-date" style="color:#854F0B">2026/08/04（預定）</div></div></div>
-  </div>
 </div>
 
 <footer class="footer">鄭群艦 Addy Cheng ・ 2026-06-26 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
@@ -380,6 +577,20 @@
         <div class="img-modal-date" id="pdf-modal-date"></div>
       </div>
       <button class="img-modal-close-btn" id="close-pdf">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Timeline Modal ── -->
+<div class="modal-overlay hidden" id="timeline-modal">
+  <div class="timeline-modal-box">
+    <div class="modal-header">
+      <div class="modal-title">📅 學歷 &amp; 工作歷程時間軸</div>
+      <button class="modal-close" id="close-timeline" title="關閉">✕</button>
+    </div>
+    <div class="timeline-chart-wrap">
+      <canvas id="chart-timeline-career" height="260"></canvas>
+      <div class="chart-note" style="margin-top:.75rem">橫軸為年份，每條色帶代表一段學歷或工作經歷</div>
     </div>
   </div>
 </div>
@@ -464,10 +675,10 @@ const DATA = [
   {c:'med', n:'CPR + AED 心肺復甦術及去顫器', d:'2025/06/26', s:'done', img:'https://drive.google.com/thumbnail?id=1iH8jbfTFxLe-DnwcHlYpAx6HjmOq5qrA&sz=w1200'},
   // Sports
   {c:'sports', n:'中華民國羽球協會 C 級教練', d:'2021/10/03', s:'done', img:'https://drive.google.com/thumbnail?id=1iIacBjWdlzLzU4-KcnMPvqecH6FL41jm&sz=w1200'},
-  {c:'sports', n:'全國賽：嘉義諸羅山盃 男雙丁組 16 強', d:'2021', s:'done'},
-  {c:'sports', n:'全國賽：承億盃 社會團體男丁組 8 強', d:'2022', s:'done'},
-  {c:'sports', n:'全國賽：寶元快客盃 男雙 16 強', d:'2024', s:'done'},
-  {c:'sports', n:'全國賽：捷豹盃 25–35y 男雙 16 強', d:'2026', s:'done'},
+  {c:'sports', n:'全國賽：嘉義諸羅山盃 男雙丁組 16 強', d:'2021', s:'done', img:'https://drive.google.com/thumbnail?id=1j5IMP9-cb9FKn-37rpbSWTagPJsp9Nwb&sz=w1200'},
+  {c:'sports', n:'全國賽：承億盃 社會團體男丁組 8 強', d:'2023', s:'done', img:'https://drive.google.com/thumbnail?id=16FZ9U0muzToUeBjcjfJk_ffuGOmIhnXD&sz=w1200'},
+  {c:'sports', n:'全國賽：寶元快客盃 男雙 8 強', d:'2024', s:'done', img:'https://drive.google.com/thumbnail?id=1nwmCxWjLtgfvF0hCTCp3sz9y9B-JToVH&sz=w1200'},
+  {c:'sports', n:'全國賽：捷豹盃 25–35y 男雙 16 強', d:'2026', s:'done', img:'https://drive.google.com/thumbnail?id=1ZBbeIbuATwUL6cyZru8-ZKJjHnHzZvzm&sz=w1200'},
 ];
 
 let currentCat = 'all';
@@ -541,9 +752,6 @@ function render() {
     </div>`;
   }).join('');
 
-  const showAwards = currentCat === 'all';
-  document.getElementById('awards-section').style.display = showAwards ? '' : 'none';
-  document.querySelector('.awards-grid').style.display    = showAwards ? '' : 'none';
 }
 
 // Filter buttons
@@ -771,9 +979,116 @@ function renderCharts() {
   ).join('');
 }
 
+// ── Awards + Edu/Work click handlers ──
+function openFileModal(el) {
+  const name = el.dataset.name;
+  const date = el.dataset.date || '';
+  if (el.classList.contains('has-img')) {
+    const img = el.dataset.img; if (!img) return;
+    const imgEl = document.getElementById('img-modal-img');
+    const errEl = document.getElementById('img-modal-err');
+    imgEl.style.display = 'block'; errEl.style.display = 'none';
+    imgEl.onerror = () => { imgEl.style.display='none'; errEl.style.display='block'; };
+    imgEl.src = img;
+    document.getElementById('img-modal-name').textContent = name;
+    document.getElementById('img-modal-date').textContent = date;
+    document.getElementById('img-modal').classList.remove('hidden');
+  } else if (el.classList.contains('has-pdf')) {
+    const pid = el.dataset.pdf; if (!pid) return;
+    document.getElementById('pdf-modal-frame').src = `https://drive.google.com/file/d/${pid}/preview`;
+    document.getElementById('pdf-modal-name').textContent = name;
+    document.getElementById('pdf-modal-date').textContent = date;
+    document.getElementById('pdf-modal').classList.remove('hidden');
+  }
+}
+
+document.getElementById('awards-grid').addEventListener('click', e => {
+  const card = e.target.closest('.award-card.has-img, .award-card.has-pdf');
+  if (card) openFileModal(card);
+});
+
+document.querySelectorAll('.edu-item.has-img, .work-item.has-img').forEach(el => {
+  el.addEventListener('click', () => openFileModal(el));
+});
+
+// ── Timeline Modal ──
+let timelineReady = false;
+function openTimelineModal() {
+  document.getElementById('timeline-modal').classList.remove('hidden');
+  if (timelineReady) return;
+  timelineReady = true;
+
+  // Data: [label, startYear (decimal), endYear (decimal), color]
+  const segments = [
+    ['輔英科技大學 護理科', 2015,   2020,   '#A32D2D'],
+    ['長庚科技大學 護理系', 2020,   2022,   '#C0392B'],
+    ['中原大學 工業與系統工程（在學）', 2025, 2027.5, '#185FA5'],
+    ['中國醫藥大學 急重症護理師', 2022.42, 2024.42, '#E07B5A'],
+    ['工研院 ESG 進修',         2024.48, 2024.62, '#0F6E56'],
+    ['佳龍科技 永續專案課長',   2024.72, 2026.5,  '#1A9974'],
+  ];
+
+  const minY = 2015, maxY = 2027.5;
+  const labels = segments.map(s => s[0]);
+  const starts = segments.map(s => s[1] - minY);
+  const durations = segments.map(s => s[2] - s[1]);
+  const colors = segments.map(s => s[3]);
+
+  new Chart(document.getElementById('chart-timeline-career'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '起始偏移', data: starts, backgroundColor: 'transparent', borderWidth: 0 },
+        { label: '持續期間', data: durations, backgroundColor: colors.map(c => c + 'CC'), borderColor: colors, borderWidth: 1.5, borderRadius: 4 }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              if (ctx.datasetIndex === 0) return null;
+              const s = segments[ctx.dataIndex];
+              const sy = Math.floor(s[1]), sm = Math.round((s[1]-sy)*12);
+              const ey = Math.floor(s[2]), em = Math.round((s[2]-ey)*12);
+              const fmt = (y,m) => m ? `${y}/${String(m).padStart(2,'0')}` : `${y}`;
+              return `${fmt(sy,sm)} ～ ${s[2] >= 2026.4 ? '至今' : fmt(ey,em)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          min: 0, max: maxY - minY,
+          ticks: {
+            font: { size: 10 }, color: '#888',
+            callback: v => `${Math.round(v + minY)}`
+          },
+          grid: { color: '#F0F0EE' }
+        },
+        y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 }, color: '#444' } }
+      }
+    }
+  });
+}
+
+function closeTimelineModal() {
+  document.getElementById('timeline-modal').classList.add('hidden');
+}
+document.getElementById('open-timeline').addEventListener('click', openTimelineModal);
+document.getElementById('close-timeline').addEventListener('click', closeTimelineModal);
+document.getElementById('timeline-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('timeline-modal')) closeTimelineModal();
+});
+
 // Escape closes modals
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeChartModal(); closeImgModal(); }
+  if (e.key === 'Escape') { closeChartModal(); closeImgModal(); closePdfModal(); closeTimelineModal(); }
 });
 
 render();
