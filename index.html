@@ -98,6 +98,43 @@
   }
   .chart-btn:hover { background: #534AB7; color: #fff; }
 
+  /* ── Search ── */
+  .search-wrap { padding: 0 2.5rem .5rem; }
+  .search-row { display: flex; align-items: center; gap: 10px; }
+  .search-inner { position: relative; flex: 1; max-width: 380px; }
+  .search-input {
+    width: 100%; font-size: 13px; padding: 7px 34px 7px 34px;
+    border: 1.5px solid var(--border); border-radius: 24px;
+    background: var(--card); color: var(--text);
+    font-family: inherit; outline: none; transition: border-color .15s;
+  }
+  .search-input:focus { border-color: #534AB7; }
+  .search-icon {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); pointer-events: none; font-size: 13px;
+  }
+  .search-clear {
+    position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 13px; padding: 2px 4px; display: none; line-height: 1;
+  }
+  .search-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .search-none {
+    grid-column: 1 / -1; padding: 2.5rem 1rem; text-align: center;
+    color: var(--muted); font-size: 13px;
+  }
+
+  /* ── Growth Chart ── */
+  .growth-wrap { padding: 0 2.5rem 1rem; }
+  .growth-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem 1.5rem 1rem;
+  }
+  .growth-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: .75rem;
+  }
+
   /* ── Grid ── */
   .grid-wrap { padding: 0 2.5rem 2rem; }
   .section-title {
@@ -387,8 +424,9 @@
   @media (max-width: 680px) {
     .header { padding: 1.25rem 1rem 1rem; }
     .stats-row { grid-template-columns: repeat(2,1fr); padding: 1rem; }
-    .filters-wrap, .grid-wrap { padding: 0 1rem 1rem; }
+    .filters-wrap, .grid-wrap, .search-wrap, .growth-wrap { padding: 0 1rem 1rem; }
     .grid { grid-template-columns: 1fr 1fr; }
+    .search-inner { max-width: 100%; }
     .chart-btn span { display: none; }
     .modal-overlay { padding: .75rem; }
     .chart-modal-box, .img-modal-box { max-height: 96vh; }
@@ -639,6 +677,14 @@
   </div>
 </div>
 
+<!-- Growth Chart -->
+<div class="growth-wrap">
+  <div class="growth-box">
+    <div class="growth-title">📈 每年取得數量（依類別）</div>
+    <canvas id="chart-growth" height="160"></canvas>
+  </div>
+</div>
+
 <!-- Filters -->
 <div class="filters-wrap">
   <div class="filters">
@@ -653,6 +699,18 @@
     <button class="fb" data-cat="sports" style="--active-color:#3B6D11">🏸 體育競技</button>
     <button class="fb" data-cat="prog"   style="--active-color:#854F0B">⏳ 考取中</button>
     <button class="chart-btn" id="open-chart">📊 <span>統計圖表</span></button>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="search-wrap">
+  <div class="search-row">
+    <div class="search-inner">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text" placeholder="搜尋證照名稱…" autocomplete="off">
+      <button class="search-clear" id="search-clear" title="清除">✕</button>
+    </div>
+    <span class="search-count" id="search-count"></span>
   </div>
 </div>
 
@@ -821,6 +879,7 @@ const DATA = [
 ];
 
 let currentCat = 'all';
+let currentSearch = '';
 
 // ── Date helpers ──
 function parseExamDate(str) {
@@ -846,9 +905,13 @@ function countdown(dateStr) {
 function render() {
   const grid = document.getElementById('grid');
   const isProg = currentCat === 'prog';
-  const items = currentCat === 'all' ? DATA
-              : isProg ? DATA.filter(d => d.s === 'prog')
-              : DATA.filter(d => d.c === currentCat);
+  let items = currentCat === 'all' ? DATA
+            : isProg ? DATA.filter(d => d.s === 'prog')
+            : DATA.filter(d => d.c === currentCat);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    items = items.filter(d => d.n.toLowerCase().includes(q));
+  }
 
   const allDone = DATA.filter(d=>d.s==='done').length;
   const allProg = DATA.filter(d=>d.s==='prog').length;
@@ -860,6 +923,7 @@ function render() {
               : isProg ? '考取中的證照'
               : CAT_LABEL[currentCat];
   document.getElementById('grid-label').textContent = label;
+  document.getElementById('search-count').textContent = currentSearch ? `找到 ${items.length} 張` : '';
 
   const sorted = [...items].sort((a,b) => {
     if (a.s !== b.s) return a.s === 'done' ? -1 : 1;
@@ -867,6 +931,11 @@ function render() {
     if (a.s === 'prog') return (da||0) - (db||0);
     return (b.d || '').localeCompare(a.d || '');
   });
+
+  if (!sorted.length) {
+    grid.innerHTML = `<div class="search-none">找不到符合「${currentSearch}」的證照</div>`;
+    return;
+  }
 
   grid.innerHTML = sorted.map(d => {
     const cd = d.s === 'prog' ? countdown(d.d) : '';
@@ -901,6 +970,21 @@ document.querySelectorAll('.fb').forEach(btn => {
     currentCat = btn.dataset.cat;
     render();
   });
+});
+
+// ── Search ──
+const searchInput = document.getElementById('search-input');
+const searchClear = document.getElementById('search-clear');
+searchInput.addEventListener('input', () => {
+  currentSearch = searchInput.value.trim();
+  searchClear.style.display = currentSearch ? 'block' : 'none';
+  render();
+});
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  currentSearch = '';
+  searchClear.style.display = 'none';
+  render();
 });
 
 // ── Image Modal (event delegation) ──
@@ -1117,6 +1201,49 @@ function renderCharts() {
      </div>`
   ).join('');
 }
+
+// ── Growth Chart (inline, always visible) ──
+(function initGrowthChart() {
+  const done = DATA.filter(d => d.s === 'done');
+  const cats = ['esg','ai','pm','ie','sec','lang','med','sports'];
+  const yearMap = {};
+  done.forEach(d => {
+    const m = d.d.match(/^(\d{4})/);
+    if (!m) return;
+    const y = m[1];
+    if (!yearMap[y]) yearMap[y] = {};
+    yearMap[y][d.c] = (yearMap[y][d.c] || 0) + 1;
+  });
+  const yearLabels = Object.keys(yearMap).sort();
+  const datasets = cats
+    .filter(c => done.some(d => d.c === c))
+    .map(c => ({
+      label: CAT_LABEL[c],
+      data: yearLabels.map(y => yearMap[y][c] || 0),
+      backgroundColor: CAT_COLOR[c] + 'CC',
+      borderColor: CAT_COLOR[c],
+      borderWidth: 1,
+      borderRadius: 3,
+    }));
+  new Chart(document.getElementById('chart-growth'), {
+    type: 'bar',
+    data: { labels: yearLabels, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } },
+        tooltip: {
+          backgroundColor: '#1A1A1A',
+          callbacks: { label: ctx => ctx.parsed.y ? `${ctx.dataset.label}：${ctx.parsed.y} 張` : null }
+        }
+      },
+      scales: {
+        x: { stacked: true, grid: { color: '#F0F0EE' }, ticks: { font: { size: 11 }, color: '#888' } },
+        y: { stacked: true, beginAtZero: true, grid: { color: '#F0F0EE' }, ticks: { font: { size: 11 }, color: '#888', stepSize: 5 } }
+      }
+    }
+  });
+})();
 
 // ── Resume PDF preview ──
 function openResume(file, name) {
