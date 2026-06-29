@@ -124,6 +124,27 @@
     color: var(--muted); font-size: 13px;
   }
 
+  /* ── Category Progress ── */
+  .cat-progress-wrap { padding: 0 2.5rem .5rem; }
+  .cat-progress-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+  }
+  .cat-prog-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 10px;
+    cursor: pointer; transition: box-shadow .15s, border-color .15s;
+    border-left: 3px solid var(--cat-color);
+  }
+  .cat-prog-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.09); }
+  .cat-prog-item.active { border-color: var(--cat-color); background: #F9F9FD; }
+  .cat-prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .cat-prog-label { font-size: 11px; font-weight: 600; color: var(--text); }
+  .cat-prog-count { font-size: 10px; color: var(--muted); }
+  .cat-prog-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .cat-prog-fill { height: 100%; border-radius: 2px; }
+
   /* ── Growth Chart ── */
   .growth-wrap { padding: 0 2.5rem 1rem; }
   .growth-box {
@@ -424,7 +445,8 @@
   @media (max-width: 680px) {
     .header { padding: 1.25rem 1rem 1rem; }
     .stats-row { grid-template-columns: repeat(2,1fr); padding: 1rem; }
-    .filters-wrap, .grid-wrap, .search-wrap, .growth-wrap { padding: 0 1rem 1rem; }
+    .filters-wrap, .grid-wrap, .search-wrap, .growth-wrap, .cat-progress-wrap { padding: 0 1rem .75rem; }
+    .cat-progress-row { grid-template-columns: repeat(2, 1fr); }
     .grid { grid-template-columns: 1fr 1fr; }
     .search-inner { max-width: 100%; }
     .chart-btn span { display: none; }
@@ -702,6 +724,11 @@
   </div>
 </div>
 
+<!-- Category Progress -->
+<div class="cat-progress-wrap">
+  <div class="cat-progress-row" id="cat-progress-row"></div>
+</div>
+
 <!-- Search -->
 <div class="search-wrap">
   <div class="search-row">
@@ -967,10 +994,49 @@ document.querySelectorAll('.fb').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.querySelectorAll('.cat-prog-item').forEach(i => i.classList.remove('active'));
+    document.querySelector(`.cat-prog-item[data-cat="${btn.dataset.cat}"]`)?.classList.add('active');
     currentCat = btn.dataset.cat;
     render();
   });
 });
+
+// ── Category Progress Bars ──
+const CAT_ICON = { esg:'🌿', ai:'🤖', pm:'📋', ie:'⚙️', sec:'🔐', lang:'💬', med:'🏥', sports:'🏸' };
+const CAT_SHORT = { esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理', ie:'工業工程', sec:'資訊安全', lang:'語言', med:'醫療護理', sports:'體育競技' };
+
+(function initCatProgress() {
+  const row = document.getElementById('cat-progress-row');
+  const cats = ['esg','ai','pm','ie','sec','lang','med','sports'];
+  row.innerHTML = cats.map(c => {
+    const total = DATA.filter(d => d.c === c).length;
+    const done  = DATA.filter(d => d.c === c && d.s === 'done').length;
+    if (!total) return '';
+    const pct = Math.round(done / total * 100);
+    return `<div class="cat-prog-item" data-cat="${c}" style="--cat-color:${CAT_COLOR[c]}"
+                 title="${CAT_SHORT[c]}：已取得 ${done} 張 / 共 ${total} 張（${pct}%）">
+      <div class="cat-prog-header">
+        <span class="cat-prog-label">${CAT_ICON[c]} ${CAT_SHORT[c]}</span>
+        <span class="cat-prog-count">${done}/${total}</span>
+      </div>
+      <div class="cat-prog-bar">
+        <div class="cat-prog-fill" style="width:${pct}%;background:${CAT_COLOR[c]}"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  row.addEventListener('click', e => {
+    const item = e.target.closest('.cat-prog-item');
+    if (!item) return;
+    const cat = item.dataset.cat;
+    document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.fb[data-cat="${cat}"]`)?.classList.add('active');
+    document.querySelectorAll('.cat-prog-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    currentCat = cat;
+    render();
+  });
+})();
 
 // ── Search ──
 const searchInput = document.getElementById('search-input');
