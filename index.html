@@ -464,21 +464,21 @@
     </div>
     <div class="about-right">
       <div class="resume-panel-title">📄 查看 / 下載履歷</div>
-      <a class="resume-card" href="#" onclick="openResume('resume-cn.pdf','中文履歷');return false;">
+      <a class="resume-card" href="resume-cn.pdf" onclick="openResume('resume-cn.pdf','中文履歷');return false;">
         <div class="resume-card-icon">📋</div>
         <div>
           <div class="resume-card-label">中文履歷</div>
           <div class="resume-card-sub">LinkedIn 版 · 含獲獎紀錄與代表證照</div>
         </div>
       </a>
-      <a class="resume-card" href="#" onclick="openResume('resume-en.pdf','英文履歷');return false;">
+      <a class="resume-card" href="resume-en.pdf" onclick="openResume('resume-en.pdf','英文履歷');return false;">
         <div class="resume-card-icon">🌐</div>
         <div>
           <div class="resume-card-label">英文履歷</div>
           <div class="resume-card-sub">LinkedIn EN · ATS 格式優化版</div>
         </div>
       </a>
-      <a class="resume-card" href="#" onclick="openResume('resume-bio.pdf','個人自傳');return false;">
+      <a class="resume-card" href="resume-bio.pdf" onclick="openResume('resume-bio.pdf','個人自傳');return false;">
         <div class="resume-card-icon">📝</div>
         <div>
           <div class="resume-card-label">個人自傳</div>
@@ -714,6 +714,7 @@
         <div class="img-modal-name" id="pdf-modal-name"></div>
         <div class="img-modal-date" id="pdf-modal-date"></div>
       </div>
+      <a id="pdf-modal-download" href="" download class="img-modal-close-btn" style="text-decoration:none;background:#185FA5;">⬇ 下載</a>
       <button class="img-modal-close-btn" id="close-pdf">關閉</button>
     </div>
   </div>
@@ -1119,9 +1120,15 @@ function renderCharts() {
 
 // ── Resume PDF preview ──
 function openResume(file, name) {
+  if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 680) {
+    window.open(file, '_blank');
+    return;
+  }
   document.getElementById('pdf-modal-frame').src = file;
   document.getElementById('pdf-modal-name').textContent = name;
   document.getElementById('pdf-modal-date').textContent = '';
+  document.getElementById('pdf-modal-download').href = file;
+  document.getElementById('pdf-modal-download').download = name + '.pdf';
   document.getElementById('pdf-modal').classList.remove('hidden');
 }
 
