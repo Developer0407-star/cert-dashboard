@@ -35,8 +35,58 @@
     --border: #E2E2E2;
     --bg:     #F7F7F5;
     --card:   #FFFFFF;
+    --surface: #F0F0EE;
     --text:   #1A1A1A;
     --muted:  #6B6B6B;
+    --award-border: #E8D8A0;
+    --countdown-bg: #FEF3C7; --countdown-fg: #92400E;
+    --today-bg: #FEE2E2; --today-fg: #991B1B;
+    --accent-tag-bg: #EEF0FB; --accent-tag-border: #C5C2ED;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --done-bg: #162610; --done-fg: #6DC44A;
+      --prog-bg: #2C1A08; --prog-fg: #D98A35;
+      --border: #2E2E2E;
+      --bg:     #111111;
+      --card:   #1C1C1C;
+      --surface: #252525;
+      --text:   #E8E8E8;
+      --muted:  #888888;
+      --award-border: #5A4A1A;
+      --countdown-bg: #3A2C08; --countdown-fg: #D4A84B;
+      --today-bg: #3A1111; --today-fg: #F87171;
+      --accent-tag-bg: #2A2750; --accent-tag-border: #4A4790;
+    }
+  }
+  [data-theme="dark"] {
+    --done-bg: #162610; --done-fg: #6DC44A;
+    --prog-bg: #2C1A08; --prog-fg: #D98A35;
+    --border: #2E2E2E;
+    --bg:     #111111;
+    --card:   #1C1C1C;
+    --surface: #252525;
+    --text:   #E8E8E8;
+    --muted:  #888888;
+    --award-border: #5A4A1A;
+    --countdown-bg: #3A2C08; --countdown-fg: #D4A84B;
+    --today-bg: #3A1111; --today-fg: #F87171;
+    --accent-tag-bg: #2A2750; --accent-tag-border: #4A4790;
+  }
+  [data-theme="light"] {
+    --done-bg:  #EAF3DE; --done-fg:  #27600F;
+    --prog-bg:  #FAEEDA; --prog-fg:  #854F0B;
+    --border: #E2E2E2;
+    --bg:     #F7F7F5;
+    --card:   #FFFFFF;
+    --surface: #F0F0EE;
+    --text:   #1A1A1A;
+    --muted:  #6B6B6B;
+    --award-border: #E8D8A0;
+    --countdown-bg: #FEF3C7; --countdown-fg: #92400E;
+    --today-bg: #FEE2E2; --today-fg: #991B1B;
+    --accent-tag-bg: #EEF0FB; --accent-tag-border: #C5C2ED;
   }
 
   body {
@@ -50,7 +100,7 @@
 
   /* ── Header ── */
   .header {
-    background: #FFFFFF;
+    background: var(--card);
     border-bottom: 1px solid var(--border);
     padding: 2rem 2.5rem 1.5rem;
     display: flex;
@@ -70,9 +120,19 @@
   .header-text .tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
   .tag {
     font-size: 11px; padding: 2px 9px; border-radius: 20px;
-    background: #F0F0EE; color: var(--muted); border: 1px solid var(--border);
+    background: var(--surface); color: var(--muted); border: 1px solid var(--border);
   }
-  .updated { margin-left: auto; font-size: 11px; color: var(--muted); text-align: right; }
+  .header-right { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .header-actions { display: flex; gap: 6px; }
+  .action-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--border); background: var(--card);
+    cursor: pointer; font-size: 15px; display: flex; align-items: center;
+    justify-content: center; transition: all .15s; color: var(--muted);
+    flex-shrink: 0;
+  }
+  .action-btn:hover { border-color: #999; color: var(--text); }
+  .updated { font-size: 11px; color: var(--muted); text-align: right; }
 
   /* ── Stats ── */
   .stats-row {
@@ -103,7 +163,7 @@
   .chart-btn {
     margin-left: auto; font-size: 12px; padding: 6px 16px;
     border-radius: 20px; border: 1.5px solid #534AB7;
-    background: #fff; color: #534AB7; cursor: pointer;
+    background: var(--card); color: #534AB7; cursor: pointer;
     font-family: inherit; font-weight: 500; transition: all .15s;
     display: flex; align-items: center; gap: 5px; flex-shrink: 0;
   }
@@ -149,7 +209,7 @@
     border-left: 3px solid var(--cat-color);
   }
   .cat-prog-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.09); }
-  .cat-prog-item.active { border-color: var(--cat-color); background: #F9F9FD; }
+  .cat-prog-item.active { border-color: var(--cat-color); background: var(--surface); }
   .cat-prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .cat-prog-label { font-size: 11px; font-weight: 600; color: var(--text); }
   .cat-prog-count { font-size: 10px; color: var(--muted); }
@@ -226,7 +286,7 @@
   .about-summary { font-size: 13.5px; line-height: 1.75; color: var(--text); }
   .about-kpi { display: flex; gap: 10px; flex-wrap: wrap; }
   .kpi-item {
-    background: #F0F0EE; border-radius: 10px; padding: 8px 14px; text-align: center;
+    background: var(--surface); border-radius: 10px; padding: 8px 14px; text-align: center;
     flex: 1; min-width: 80px;
   }
   .kpi-num { font-size: 22px; font-weight: 700; color: var(--done-fg); line-height: 1.2; }
@@ -239,12 +299,12 @@
   .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
   .skill-tag {
     font-size: 11px; padding: 3px 10px; border-radius: 20px;
-    background: #F0F0EE; color: var(--text); border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
   }
-  .skill-tag.accent { background: #EEF0FB; color: #534AB7; border-color: #C5C2ED; }
+  .skill-tag.accent { background: var(--accent-tag-bg); color: #534AB7; border-color: var(--accent-tag-border); }
   .about-right {
     display: flex; flex-direction: column;
-    padding: 1.5rem 1.25rem; gap: 10px; background: #FAFAF8;
+    padding: 1.5rem 1.25rem; gap: 10px; background: var(--surface);
   }
   .resume-panel-title {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -285,7 +345,7 @@
   }
   .timeline-btn {
     font-size: 11px; padding: 3px 12px; border-radius: 20px;
-    border: 1.5px solid #534AB7; background: #fff; color: #534AB7;
+    border: 1.5px solid #534AB7; background: var(--card); color: #534AB7;
     cursor: pointer; font-family: inherit; font-weight: 500; transition: all .15s;
   }
   .timeline-btn:hover { background: #534AB7; color: #fff; }
@@ -296,7 +356,7 @@
     position: relative;
   }
   .edu-item:last-child, .work-item:last-child { border-bottom: none; }
-  .edu-item:hover, .work-item:hover { background: #F7F7F5; }
+  .edu-item:hover, .work-item:hover { background: var(--surface); }
   .edu-item.has-img, .work-item.has-img { cursor: pointer; }
   .item-dot {
     width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
@@ -309,7 +369,7 @@
     font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
     white-space: nowrap; align-self: center;
   }
-  .item-badge.studying { background: #FAEEDA; color: #854F0B; }
+  .item-badge.studying { background: var(--prog-bg); color: var(--prog-fg); }
   .item-badge.done { background: var(--done-bg); color: var(--done-fg); }
   .item-file-badge { font-size: 14px; position: absolute; top: 8px; right: 4px; opacity: .7; }
 
@@ -326,7 +386,7 @@
     gap: 10px;
   }
   .award-card {
-    background: var(--card); border: 1px solid #E8D8A0;
+    background: var(--card); border: 1px solid var(--award-border);
     border-radius: 10px; padding: .875rem 1rem;
     border-left: 3px solid var(--award);
     display: flex; align-items: flex-start; gap: 10px;
@@ -345,7 +405,7 @@
 
   /* ── Timeline Modal ── */
   .timeline-modal-box {
-    background: #fff; border-radius: 14px;
+    background: var(--card); border-radius: 14px;
     max-width: 820px; width: 100%;
     max-height: 90vh; overflow-y: auto;
     box-shadow: 0 16px 48px rgba(0,0,0,.22);
@@ -365,9 +425,9 @@
   .countdown {
     display: inline-block; font-size: 11px; font-weight: 600;
     padding: 2px 8px; border-radius: 10px;
-    background: #FEF3C7; color: #92400E;
+    background: var(--countdown-bg); color: var(--countdown-fg);
   }
-  .countdown.today { background: #FEE2E2; color: #991B1B; }
+  .countdown.today { background: var(--today-bg); color: var(--today-fg); }
   .card.hidden { display: none; }
 
   /* ── Modal base ── */
@@ -386,7 +446,7 @@
     padding: 1.125rem 1.5rem 1rem;
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: #fff; z-index: 1;
+    position: sticky; top: 0; background: var(--card); z-index: 1;
     border-radius: 14px 14px 0 0;
   }
   .modal-title { font-size: 15px; font-weight: 600; }
@@ -395,11 +455,11 @@
     color: var(--muted); cursor: pointer; padding: 4px 9px; border-radius: 6px;
     transition: background .12s;
   }
-  .modal-close:hover { background: #f0f0ee; color: var(--text); }
+  .modal-close:hover { background: var(--surface); color: var(--text); }
 
   /* ── Chart Modal ── */
   .chart-modal-box {
-    background: #fff; border-radius: 14px;
+    background: var(--card); border-radius: 14px;
     max-width: 820px; width: 100%;
     max-height: 90vh; overflow-y: auto;
     box-shadow: 0 16px 48px rgba(0,0,0,.22);
@@ -424,7 +484,7 @@
 
   /* ── Image Modal ── */
   .img-modal-box {
-    background: #fff; border-radius: 14px;
+    background: var(--card); border-radius: 14px;
     max-width: 720px; width: 100%;
     box-shadow: 0 16px 48px rgba(0,0,0,.22);
     overflow: hidden;
@@ -432,11 +492,11 @@
   }
   .img-modal-img {
     width: 100%; max-height: 70vh; object-fit: contain;
-    display: block; background: #f5f5f5;
+    display: block; background: var(--surface);
   }
   .img-modal-err {
     display: none; padding: 3.5rem 2rem; text-align: center;
-    color: var(--muted); font-size: 13px; background: #f5f5f5;
+    color: var(--muted); font-size: 13px; background: var(--surface);
   }
   .img-modal-footer {
     padding: .875rem 1.25rem 1rem;
@@ -483,7 +543,13 @@
       <span class="tag">工業與系統工程</span>
     </div>
   </div>
-  <div class="updated">資料更新：2026-06-30</div>
+  <div class="header-right">
+    <div class="header-actions">
+      <button class="action-btn" id="theme-toggle" title="切換深色模式">🌙</button>
+      <button class="action-btn" id="share-btn" title="分享此頁">📤</button>
+    </div>
+    <div class="updated">資料更新：2026-06-30</div>
+  </div>
 </header>
 
 <!-- About Me -->
@@ -1453,6 +1519,40 @@ document.addEventListener('keydown', e => {
 });
 
 render();
+
+// ── Dark Mode ──
+const themeToggle = document.getElementById('theme-toggle');
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeToggle.textContent = dark ? '☀️' : '🌙';
+  themeToggle.title = dark ? '切換淺色模式' : '切換深色模式';
+}
+(function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = saved === 'dark' || (!saved && prefersDark);
+  applyTheme(isDark);
+})();
+themeToggle.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  applyTheme(!isDark);
+});
+
+// ── Share Button ──
+const shareBtn = document.getElementById('share-btn');
+shareBtn.addEventListener('click', async () => {
+  const url = 'https://developer0407-star.github.io/cert-dashboard/';
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: '鄭群艦 Addy Cheng — 證照看板', text: 'ESG × AI × 專案管理，62 張跨域認證', url });
+    } catch (e) {}
+  } else {
+    await navigator.clipboard.writeText(url);
+    shareBtn.textContent = '✅';
+    setTimeout(() => shareBtn.textContent = '📤', 2000);
+  }
+});
 </script>
 </body>
 </html>
