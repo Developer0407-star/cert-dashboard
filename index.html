@@ -570,7 +570,7 @@
       <div class="about-kpi">
         <div class="kpi-item"><div class="kpi-num">100萬</div><div class="kpi-label">年省顧問費</div></div>
         <div class="kpi-item"><div class="kpi-num">58%</div><div class="kpi-label">行政效率提升</div></div>
-        <div class="kpi-item"><div class="kpi-num">40+</div><div class="kpi-label">跨域認證</div></div>
+        <div class="kpi-item"><div class="kpi-num" id="kpi-cert-count">40+</div><div class="kpi-label">跨域認證</div></div>
       </div>
       <div id="bio-skills" style="display:flex;flex-direction:column;gap:10px">
         <div class="skill-group">
@@ -1020,6 +1020,8 @@ function countdown(dateStr) {
   if (diff === 0) return '<span class="countdown today">今天！</span>';
   return `<span class="countdown">還有 ${diff} 天</span>`;
 }
+
+document.getElementById('kpi-cert-count').textContent = DATA.length + '+';
 
 // ── Render ──
 function render() {
