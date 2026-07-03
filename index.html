@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>鄭群艦 Addy Cheng — 證照看板</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="ESG × AI × 專案管理，62 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="description" content="ESG × AI × 專案管理，67 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://developer0407-star.github.io/cert-dashboard/">
 <meta property="og:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta property="og:description" content="ESG × AI × 專案管理，62 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta property="og:description" content="ESG × AI × 專案管理，67 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta name="twitter:description" content="ESG × AI × 專案管理，62 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="twitter:description" content="ESG × AI × 專案管理，67 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta name="twitter:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -122,6 +122,7 @@
   }
   .header-text h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.02em; }
   .header-text .sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .header-text .tagline { font-size: 12px; font-style: italic; color: #0F6E56; margin-top: 3px; letter-spacing: 0.02em; }
   .header-text .tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
   .tag {
     font-size: 11px; padding: 2px 9px; border-radius: 20px;
@@ -539,6 +540,7 @@
   <div class="header-text">
     <h1>鄭群艦　CYUN JIAN CHENG</h1>
     <div class="sub">佳龍科技工程股份有限公司 ・ 永續專案課長</div>
+    <div class="tagline">There is always a better way</div>
     <div class="tags">
       <span class="tag">ESG / 淨零碳</span>
       <span class="tag">AI 應用</span>
@@ -1555,7 +1557,7 @@ shareBtn.addEventListener('click', async () => {
   const url = 'https://developer0407-star.github.io/cert-dashboard/';
   if (navigator.share) {
     try {
-      await navigator.share({ title: '鄭群艦 Addy Cheng — 證照看板', text: 'ESG × AI × 專案管理，62 張跨域認證', url });
+      await navigator.share({ title: '鄭群艦 Addy Cheng — 證照看板', text: `ESG × AI × 專案管理，${DATA.length} 張跨域認證`, url });
     } catch (e) {}
   } else {
     await navigator.clipboard.writeText(url);
