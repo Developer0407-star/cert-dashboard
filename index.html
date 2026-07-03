@@ -520,7 +520,10 @@
   .img-modal-close-btn:hover { border-color: #999; color: var(--text); }
 
   @media (max-width: 680px) {
-    .header { padding: 1.25rem 1rem 1rem; }
+    .header { padding: 1.25rem 1rem 1rem; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; }
+    .logo-mark { height: 44px; }
+    .header-right { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; margin-left: 0; }
+    .header-text .tagline { margin-bottom: 2px; }
     .stats-row { grid-template-columns: repeat(2,1fr); padding: 1rem; }
     .filters-wrap, .grid-wrap, .search-wrap, .growth-wrap, .cat-progress-wrap { padding: 0 1rem .75rem; }
     .cat-progress-row { grid-template-columns: repeat(2, 1fr); }
