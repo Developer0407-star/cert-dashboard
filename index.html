@@ -864,6 +864,7 @@
         <div class="img-modal-name" id="img-modal-name"></div>
         <div class="img-modal-date" id="img-modal-date"></div>
       </div>
+      <a id="img-modal-download" href="" class="img-modal-close-btn" style="text-decoration:none;background:#185FA5;">⬇ 下載</a>
       <button class="img-modal-close-btn" id="close-img">關閉</button>
     </div>
   </div>
@@ -1163,6 +1164,8 @@ document.getElementById('grid').addEventListener('click', e => {
     imgEl.src = img;
     document.getElementById('img-modal-name').textContent = name;
     document.getElementById('img-modal-date').textContent = date;
+    const imgId = (img.match(/id=([^&]+)/) || [])[1];
+    document.getElementById('img-modal-download').href = imgId ? `https://drive.google.com/uc?export=download&id=${imgId}` : img;
     document.getElementById('img-modal').classList.remove('hidden');
   } else if (card.classList.contains('has-pdf')) {
     const pid = card.dataset.pdf;
@@ -1432,6 +1435,8 @@ function openFileModal(el) {
     imgEl.src = img;
     document.getElementById('img-modal-name').textContent = name;
     document.getElementById('img-modal-date').textContent = date;
+    const imgId = (img.match(/id=([^&]+)/) || [])[1];
+    document.getElementById('img-modal-download').href = imgId ? `https://drive.google.com/uc?export=download&id=${imgId}` : img;
     document.getElementById('img-modal').classList.remove('hidden');
   } else if (el.classList.contains('has-pdf')) {
     const pid = el.dataset.pdf; if (!pid) return;
