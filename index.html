@@ -1170,6 +1170,8 @@ document.getElementById('grid').addEventListener('click', e => {
     document.getElementById('pdf-modal-frame').src = `https://drive.google.com/file/d/${pid}/preview`;
     document.getElementById('pdf-modal-name').textContent = name;
     document.getElementById('pdf-modal-date').textContent = date;
+    document.getElementById('pdf-modal-download').href = `https://drive.google.com/uc?export=download&id=${pid}`;
+    document.getElementById('pdf-modal-download').removeAttribute('download');
     document.getElementById('pdf-modal').classList.remove('hidden');
   }
 });
@@ -1436,6 +1438,8 @@ function openFileModal(el) {
     document.getElementById('pdf-modal-frame').src = `https://drive.google.com/file/d/${pid}/preview`;
     document.getElementById('pdf-modal-name').textContent = name;
     document.getElementById('pdf-modal-date').textContent = date;
+    document.getElementById('pdf-modal-download').href = `https://drive.google.com/uc?export=download&id=${pid}`;
+    document.getElementById('pdf-modal-download').removeAttribute('download');
     document.getElementById('pdf-modal').classList.remove('hidden');
   }
 }
