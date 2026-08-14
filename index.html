@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>鄭群艦 Addy Cheng — 證照看板</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="ESG × AI × 專案管理，73 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="description" content="ESG × AI × 專案管理，76 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://developer0407-star.github.io/cert-dashboard/">
 <meta property="og:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta property="og:description" content="ESG × AI × 專案管理，73 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta property="og:description" content="ESG × AI × 專案管理，76 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta name="twitter:description" content="ESG × AI × 專案管理，73 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="twitter:description" content="ESG × AI × 專案管理，76 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta name="twitter:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -550,7 +550,7 @@
       <button class="action-btn" id="theme-toggle" title="切換深色模式">🌙</button>
       <button class="action-btn" id="share-btn" title="分享此頁">📤</button>
     </div>
-    <div class="updated">資料更新：2026-08-13</div>
+    <div class="updated">資料更新：2026-08-14</div>
   </div>
 </header>
 
@@ -858,6 +858,7 @@
     <button class="fb" data-cat="esg"    style="--active-color:#0F6E56">🌿 ESG 永續</button>
     <button class="fb" data-cat="ai"     style="--active-color:#534AB7">🤖 AI 人工智慧</button>
     <button class="fb" data-cat="pm"     style="--active-color:#185FA5">📋 專案管理</button>
+    <button class="fb" data-cat="biz"    style="--active-color:#B8860B">🏢 企業管理</button>
     <button class="fb" data-cat="ie"     style="--active-color:#BA7517">⚙️ 工業工程</button>
     <button class="fb" data-cat="sec"    style="--active-color:#993C1D">🔐 資訊安全</button>
     <button class="fb" data-cat="lang"   style="--active-color:#993556">💬 語言</button>
@@ -892,7 +893,7 @@
 
 </div>
 
-<footer class="footer">鄭群艦 Addy Cheng ・ 2026-08-13 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
+<footer class="footer">鄭群艦 Addy Cheng ・ 2026-08-14 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
 
 <!-- ── Chart Modal ── -->
 <div class="modal-overlay hidden" id="chart-modal">
@@ -966,12 +967,12 @@
 
 <script>
 const CAT_COLOR = {
-  esg:'#0F6E56', ai:'#534AB7', pm:'#185FA5',
+  esg:'#0F6E56', ai:'#534AB7', pm:'#185FA5', biz:'#B8860B',
   ie:'#BA7517', sec:'#993C1D', lang:'#993556',
   med:'#A32D2D', sports:'#3B6D11'
 };
 const CAT_LABEL = {
-  esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理',
+  esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理', biz:'企業管理',
   ie:'工業工程', sec:'資訊安全', lang:'語言',
   med:'醫療護理', sports:'體育競技'
 };
@@ -999,6 +1000,8 @@ const DATA = [
   {c:'esg', n:'SGS ISO 14068-1:2023 碳中和主導查驗員', d:'2026/08/19～21', s:'prog'},
   {c:'esg', n:'IPAS 淨零碳規劃管理師 中級', d:'2026/08/22', s:'prog'},
   {c:'esg', n:'2026商業部門減碳培訓 溫室氣體盤查實戰（臺南）', d:'2026/06/30', s:'done', pdf:'1rZWbAjX06UHOIqTkb5NwZ-VU_iT4X1lk'},
+  {c:'esg', n:'2026商業部門減碳培訓 服務碳足跡實務解析（台南）', d:'2026/07/14', s:'done', pdf:'1YswSsOlJIXy7Oz94sMG81pKWyGnjBwzS'},
+  {c:'esg', n:'2026商業部門減碳培訓 服務碳足跡實務解析（台北）', d:'2026/07/21', s:'done', pdf:'19jC4yAobY16r5413py89iJEme2oJfG2C'},
   // AI
   {c:'ai', n:'AI自學證書（Google Cloud）', d:'2025/05/21', s:'done', img:'https://drive.google.com/thumbnail?id=1odv7q6em4Kgk-hRbXmmE5NpONqJSXbc-&sz=w1200'},
   {c:'ai', n:'AI自學證書（AWS Training & Certification）', d:'2025/05/21', s:'done', pdf:'126IIq8_QEEYY1om5HdYdv6q8tMeBwhva'},
@@ -1038,6 +1041,8 @@ const DATA = [
   {c:'pm', n:'PMI - Generative AI Overview for Project Managers', d:'2026/06/29', s:'done', pdf:'1y9NaYPXPhKAOH5rC7eEL02zXojQduiLM'},
   {c:'pm', n:'PMI - Practical Application of GenAI for Project Managers', d:'2026/06/29', s:'done', pdf:'1vMc6feMgKuOB_zU8btoa8TnK7LHFb-yT'},
   {c:'pm', n:'PMI - Talking to AI: Prompt Engineering for Project Managers', d:'2026/06/29', s:'done', pdf:'17kgXkkUwHaJvplJ0jI0wSi2R9X-XvW4i'},
+  // 企業管理
+  {c:'biz', n:'[15I3468]【竹科管理局線上免費課程】OKR績效管理實務班', d:'2026/08/13', s:'done', pdf:'1JA-lCgNTm5F5mjDxNuLT9aDVfk2iIFRI'},
   // IE
   {c:'ie', n:'甲種職業安全衛生業務主管', d:'2025/11/09', s:'done', pdf:'1Vy9aSq9m-cKSC1WeU7rQKI4qlhRVIQIK'},
   {c:'ie', n:'IATF 16949:2016 汽車業品質管理系統內部稽核員', d:'2026/01/29', s:'done', pdf:'1EXr5XZ2M2297gWVEEkpde8rgoRSRxP1Y'},
@@ -1164,12 +1169,12 @@ document.querySelectorAll('.fb').forEach(btn => {
 });
 
 // ── Category Progress Bars ──
-const CAT_ICON = { esg:'🌿', ai:'🤖', pm:'📋', ie:'⚙️', sec:'🔐', lang:'💬', med:'🏥', sports:'🏸' };
-const CAT_SHORT = { esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理', ie:'工業工程', sec:'資訊安全', lang:'語言', med:'醫療護理', sports:'體育競技' };
+const CAT_ICON = { esg:'🌿', ai:'🤖', pm:'📋', biz:'🏢', ie:'⚙️', sec:'🔐', lang:'💬', med:'🏥', sports:'🏸' };
+const CAT_SHORT = { esg:'ESG 永續', ai:'AI 人工智慧', pm:'專案管理', biz:'企業管理', ie:'工業工程', sec:'資訊安全', lang:'語言', med:'醫療護理', sports:'體育競技' };
 
 (function initCatProgress() {
   const row = document.getElementById('cat-progress-row');
-  const cats = ['esg','ai','pm','ie','sec','lang','med','sports'];
+  const cats = ['esg','ai','pm','biz','ie','sec','lang','med','sports'];
   row.innerHTML = cats.map(c => {
     const total = DATA.filter(d => d.c === c).length;
     const done  = DATA.filter(d => d.c === c && d.s === 'done').length;
@@ -1383,7 +1388,7 @@ function renderCharts() {
   });
 
   // Category horizontal bar
-  const catOrder = ['ai','esg','med','sports','pm','ie','lang','sec'];
+  const catOrder = ['ai','esg','med','sports','pm','biz','ie','lang','sec'];
   const hasCat   = catOrder.filter(c => catData[c]);
   const catLabels = hasCat.map(c => CAT_LABEL[c]);
   const catValues = hasCat.map(c => catData[c]);
@@ -1437,7 +1442,7 @@ function renderCharts() {
 // ── Growth Chart (inline, always visible) ──
 (function initGrowthChart() {
   const done = DATA.filter(d => d.s === 'done');
-  const cats = ['esg','ai','pm','ie','sec','lang','med','sports'];
+  const cats = ['esg','ai','pm','biz','ie','sec','lang','med','sports'];
   const yearMap = {};
   done.forEach(d => {
     const m = d.d.match(/^(\d{4})/);
