@@ -401,6 +401,20 @@
   .award-ext-link:hover { text-decoration: underline; }
   .award-file-badge { position: absolute; top: 8px; right: 8px; font-size: 14px; opacity: .7; pointer-events: none; }
 
+  /* ── Contact Modal ── */
+  .contact-modal-box {
+    background: var(--card); border-radius: 14px;
+    max-width: 320px; width: 100%;
+    box-shadow: 0 16px 48px rgba(0,0,0,.22);
+    animation: mSlideUp .18s ease;
+  }
+  .contact-item { display:flex; align-items:center; gap:10px; padding:.75rem 1.5rem; font-size:14px; color:var(--text); text-decoration:none; }
+  .contact-item:not(:last-child) { border-bottom:1px solid var(--border); }
+  a.contact-item:hover { background:var(--surface); }
+  .contact-icon { font-size:16px; flex-shrink:0; }
+  .contact-copy { margin-left:auto; font-size:11px; color:var(--muted); cursor:pointer; opacity:.7; flex-shrink:0; }
+  .contact-copy:hover { opacity:1; }
+
   /* ── Timeline Modal ── */
   .timeline-modal-box {
     background: var(--card); border-radius: 14px;
@@ -548,9 +562,10 @@
   <div class="header-right">
     <div class="header-actions">
       <button class="action-btn" id="theme-toggle" title="切換深色模式">🌙</button>
+      <button class="action-btn" id="contact-btn" title="聯絡資訊">✉️</button>
       <button class="action-btn" id="share-btn" title="分享此頁">📤</button>
     </div>
-    <div class="updated">資料更新：2026-08-14</div>
+    <div class="updated">資料更新：2026-08-18</div>
   </div>
 </header>
 
@@ -893,7 +908,7 @@
 
 </div>
 
-<footer class="footer">鄭群艦 Addy Cheng ・ 2026-08-14 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
+<footer class="footer">鄭群艦 Addy Cheng ・ 2026-08-18 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
 
 <!-- ── Chart Modal ── -->
 <div class="modal-overlay hidden" id="chart-modal">
@@ -952,6 +967,21 @@
 </div>
 
 <!-- ── Timeline Modal ── -->
+<div class="modal-overlay hidden" id="contact-modal">
+  <div class="contact-modal-box">
+    <div class="modal-header">
+      <div class="modal-title">✉️ 聯絡資訊</div>
+      <button class="modal-close" id="close-contact" title="關閉">✕</button>
+    </div>
+    <div class="contact-item"><span class="contact-icon">👤</span> 鄭群艦 Addy Cheng</div>
+    <div class="contact-item"><span class="contact-icon">📱</span> 0986-030-171 <span class="contact-copy" data-copy="0986030171">複製</span></div>
+    <div class="contact-item"><span class="contact-icon">💬</span> Line ID：0492228046 <span class="contact-copy" data-copy="0492228046">複製</span></div>
+    <a class="contact-item" href="mailto:brown890407@gmail.com"><span class="contact-icon">✉️</span> brown890407@gmail.com <span class="contact-copy" data-copy="brown890407@gmail.com">複製</span></a>
+    <a class="contact-item" href="https://www.linkedin.com/in/群艦-鄭-186592307" target="_blank"><span class="contact-icon">🔗</span> LinkedIn 個人頁面</a>
+    <a class="contact-item" href="https://pda.104.com.tw/profile/share/dkJG697ELW3md0nJ4Wd00GOXtPBGwosr" target="_blank"><span class="contact-icon">📋</span> 104 履歷（連結至 2026/09/01）</a>
+  </div>
+</div>
+
 <div class="modal-overlay hidden" id="timeline-modal">
   <div class="timeline-modal-box">
     <div class="modal-header">
@@ -1604,6 +1634,19 @@ function openTimelineModal() {
 function closeTimelineModal() {
   document.getElementById('timeline-modal').classList.add('hidden');
 }
+function closeContactModal() { document.getElementById('contact-modal').classList.add('hidden'); }
+document.getElementById('contact-btn').addEventListener('click', () => document.getElementById('contact-modal').classList.remove('hidden'));
+document.getElementById('close-contact').addEventListener('click', closeContactModal);
+document.getElementById('contact-modal').addEventListener('click', e => { if (e.target === document.getElementById('contact-modal')) closeContactModal(); });
+document.querySelectorAll('.contact-copy').forEach(el => {
+  el.addEventListener('click', async e => {
+    e.preventDefault(); e.stopPropagation();
+    await navigator.clipboard.writeText(el.dataset.copy);
+    const orig = el.textContent; el.textContent = '已複製';
+    setTimeout(() => el.textContent = orig, 1500);
+  });
+});
+
 document.getElementById('open-timeline').addEventListener('click', openTimelineModal);
 document.getElementById('close-timeline').addEventListener('click', closeTimelineModal);
 document.getElementById('timeline-modal').addEventListener('click', e => {
@@ -1612,7 +1655,7 @@ document.getElementById('timeline-modal').addEventListener('click', e => {
 
 // Escape closes modals
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeChartModal(); closeImgModal(); closePdfModal(); closeTimelineModal(); }
+  if (e.key === 'Escape') { closeChartModal(); closeImgModal(); closePdfModal(); closeTimelineModal(); closeContactModal(); }
 });
 
 render();
