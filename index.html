@@ -355,7 +355,7 @@
   }
   .edu-item:last-child, .work-item:last-child { border-bottom: none; }
   .edu-item:hover, .work-item:hover { background: var(--surface); }
-  .edu-item.has-img, .work-item.has-img, .work-item.has-pdf { cursor: pointer; }
+  .edu-item.has-img, .edu-item.has-pdf, .work-item.has-img, .work-item.has-pdf { cursor: pointer; }
   .item-dot {
     width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
   }
@@ -565,7 +565,7 @@
       <button class="action-btn" id="contact-btn" title="聯絡資訊">✉️</button>
       <button class="action-btn" id="share-btn" title="分享此頁">📤</button>
     </div>
-    <div class="updated">資料更新：2026-09-01</div>
+    <div class="updated">資料更新：2026-09-08</div>
   </div>
 </header>
 
@@ -668,7 +668,7 @@
       <span class="item-badge done">畢業</span>
       <span class="item-file-badge">📷</span>
     </div>
-    <div class="edu-item" style="cursor:default">
+    <div class="edu-item has-pdf" data-pdf="1NoRGHBfflKGPEo6VHjS6m9e1f7aLQpPR" data-name="中原大學 工業與系統工程系（碩士）" data-date="2025/09 ～ 2027/06（預計）">
       <div class="item-dot" style="background:#185FA5"></div>
       <div class="item-main">
         <div class="item-school">中原大學</div>
@@ -676,6 +676,7 @@
         <div class="item-period">2025/09 ～ 2027/06（預計）</div>
       </div>
       <span class="item-badge studying">在學中</span>
+      <span class="item-file-badge">📄</span>
     </div>
   </div>
   <!-- Work + Timeline -->
@@ -908,7 +909,7 @@
 
 </div>
 
-<footer class="footer">鄭群艦 Addy Cheng ・ 2026-09-01 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
+<footer class="footer">鄭群艦 Addy Cheng ・ 2026-09-08 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
 
 <!-- ── Chart Modal ── -->
 <div class="modal-overlay hidden" id="chart-modal">
@@ -1567,7 +1568,7 @@ document.getElementById('ai-teaching-grid').addEventListener('click', e => {
   if (card) openFileModal(card);
 });
 
-document.querySelectorAll('.edu-item.has-img, .work-item.has-img, .work-item.has-pdf').forEach(el => {
+document.querySelectorAll('.edu-item.has-img, .edu-item.has-pdf, .work-item.has-img, .work-item.has-pdf').forEach(el => {
   el.addEventListener('click', () => openFileModal(el));
 });
 
