@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>鄭群艦 Addy Cheng — 證照看板</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="ESG × AI × 專案管理，83 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="description" content="ESG × AI × 專案管理，85 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://developer0407-star.github.io/cert-dashboard/">
 <meta property="og:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta property="og:description" content="ESG × AI × 專案管理，83 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta property="og:description" content="ESG × AI × 專案管理，85 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta property="og:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="鄭群艦 Addy Cheng — 證照看板">
-<meta name="twitter:description" content="ESG × AI × 專案管理，83 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
+<meta name="twitter:description" content="ESG × AI × 專案管理，85 張跨域認證。護理師跨域轉職，現任佳龍科技永續專案課長。">
 <meta name="twitter:image" content="https://developer0407-star.github.io/cert-dashboard/og-image.jpg">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -134,7 +134,7 @@
 
   /* ── Stats ── */
   .stats-row {
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(5, 1fr);
     gap: 12px; padding: 1.5rem 2.5rem;
   }
   .stat {
@@ -531,6 +531,7 @@
     .header-right { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; margin-left: 0; }
     .header-text .tagline { margin-bottom: 2px; }
     .stats-row { grid-template-columns: repeat(2,1fr); padding: 1rem; }
+    .stat:last-child { grid-column: 1 / -1; }
     .filters-wrap, .grid-wrap, .search-wrap, .growth-wrap, .cat-progress-wrap { padding: 0 1rem .75rem; }
     .cat-progress-row { grid-template-columns: repeat(2, 1fr); }
     .grid { grid-template-columns: 1fr 1fr; }
@@ -566,7 +567,7 @@
       <button class="action-btn" id="contact-btn" title="聯絡資訊">✉️</button>
       <button class="action-btn" id="share-btn" title="分享此頁">📤</button>
     </div>
-    <div class="updated">資料更新：2026-10-07</div>
+    <div class="updated">資料更新：2026-11-02</div>
   </div>
 </header>
 
@@ -860,19 +861,23 @@
 <div class="stats-row">
   <div class="stat">
     <div class="stat-label">證照總數</div>
-    <div class="stat-value" id="s-total">58</div>
+    <div class="stat-value" id="s-lic">12</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">證書總數</div>
+    <div class="stat-value" id="s-cert">73</div>
   </div>
   <div class="stat">
     <div class="stat-label">已取得</div>
-    <div class="stat-value green" id="s-done">44</div>
+    <div class="stat-value green" id="s-done">82</div>
   </div>
   <div class="stat">
     <div class="stat-label">考取中</div>
-    <div class="stat-value orange" id="s-prog">14</div>
+    <div class="stat-value orange" id="s-prog">3</div>
   </div>
   <div class="stat">
     <div class="stat-label">類別</div>
-    <div class="stat-value">8</div>
+    <div class="stat-value">9</div>
   </div>
 </div>
 
@@ -888,6 +893,7 @@
 <div class="filters-wrap">
   <div class="filters">
     <button class="fb active" data-cat="all"    style="--active-color:#444">全部</button>
+    <button class="fb" data-cat="lic"    style="--active-color:#1D6F8A">🎓 證照</button>
     <button class="fb" data-cat="esg"    style="--active-color:#0F6E56">🌿 ESG 永續</button>
     <button class="fb" data-cat="ai"     style="--active-color:#534AB7">🤖 AI 人工智慧</button>
     <button class="fb" data-cat="pm"     style="--active-color:#185FA5">📋 專案管理</button>
@@ -921,12 +927,12 @@
 
 <!-- Cards -->
 <div class="grid-wrap">
-  <div class="section-title" id="grid-label">所有證照</div>
+  <div class="section-title" id="grid-label">所有證照與證書</div>
   <div class="grid" id="grid"></div>
 
 </div>
 
-<footer class="footer">鄭群艦 Addy Cheng ・ 2026-10-07 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
+<footer class="footer">鄭群艦 Addy Cheng ・ 2026-11-02 更新 ・ 資料來源：Notion 個人證照系統（CSV 匯出）</footer>
 
 <!-- ── Chart Modal ── -->
 <div class="modal-overlay hidden" id="chart-modal">
@@ -1033,12 +1039,12 @@ const CAT_LABEL = {
 const DATA = [
   // ESG
   {c:'esg', n:'COURSERA ESG 自學證書', d:'2024/05/07', s:'done', pdf:'1ilGRaGWFikOsP4mOfTOLONGxAns_I2Iv'},
-  {c:'esg', n:'財團法人保險事業發展中心 永續發展基礎能力測驗', d:'2024/07/15', s:'done', img:'https://drive.google.com/thumbnail?id=1tIiy7XY3kLZ7PhcJMoBG94UcNryDFbVJ&sz=w1200'},
+  {c:'esg', n:'財團法人保險事業發展中心 永續發展基礎能力測驗證照', d:'2024/07/15', s:'done', lic:1, pdf:'12kNI8ctpVhFxkC0hLuCo4ipIZlmfLSLt'},
   {c:'esg', n:'工研院 綠領減碳推動人才養成（210小時）', d:'2024/08/14', s:'done', img:'https://drive.google.com/thumbnail?id=1cnxy26Ly42s_WFu-5Sm_7vzBFptkd3Cu&sz=w1200'},
-  {c:'esg', n:'IPAS 淨零碳規劃管理師 初級', d:'2024/11/11', s:'done', img:'https://drive.google.com/thumbnail?id=1sydRXcBB_WnIZyVvdhraBBtDymU6-iYe&sz=w1200'},
+  {c:'esg', n:'IPAS 淨零碳規劃管理師 初級證照', d:'2024/11/11', s:'done', lic:1, pdf:'1Z58_v1NqEqPaIpYwnZ73riafnzF5rUP4'},
   {c:'esg', n:'塑膠工業技術發展中心 數位減碳實務工作坊', d:'2025/04/29', s:'done', img:'https://drive.google.com/thumbnail?id=1f1pJF8qwa-PBMPOOcV8AW9MiPHgBXU-w&sz=w1200'},
   {c:'esg', n:'Delta 台達電子 節能管理人員培訓', d:'2026/06/17', s:'done', pdf:'1WUubP8ghY9u3T929QHFlji0Tv1a9s4fw'},
-  {c:'esg', n:'ESCO 節能績效量測與驗證工程師 初級', d:'2026/06/24', s:'done', pdf:'1ipz5B4dafNUgKk9Mu5C-D2NUa-etIz8m'},
+  {c:'esg', n:'ESCO 節能績效量測與驗證工程師 初級證照', d:'2026/06/24', s:'done', lic:1, pdf:'1_RSFNYdKcbr-y_1fImC53Gn4LpJMqjZe'},
   {c:'esg', n:'2026商業部門減碳培訓 溫室氣體盤查實戰（台中）', d:'2026/06/23', s:'done', pdf:'12Oh1udjM6juLHwBdNuyXOA1ViqsUbjQX'},
   {c:'esg', n:'SGS ISO 50001:2018 能源管理系統主導稽核員', d:'2026/06/29', s:'done', pdf:'1XSpGWRNH4uMUK4zISqucutFT0VCce4uN'},
   {c:'esg', n:'經濟部 ISO 50001 能源管理系統標準解析（台北）', d:'2026/05/01', s:'done', pdf:'1Die11BKtaLCm7dUyIrhA0aZWQriejD_j'},
@@ -1046,7 +1052,7 @@ const DATA = [
   {c:'esg', n:'SGS ISO 14067:2018 碳足跡標準主導查證員', d:'2026/07/13', s:'done', pdf:'1jV3yyabSZ2EA1lCRclj9Imupp8QQpXBq'},
   {c:'esg', n:'SGS ISO 14064-1:2018 溫室氣體盤查標準主導查證員', d:'2026/06/08', s:'done', pdf:'17oD_gKnETJh6Jz679QZavSUqlQBzs4dr'},
   {c:'esg', n:'SGS ISO 14068-1:2023 碳中和主導查驗員', d:'2026/08/19～21', s:'done', pdf:'13n_zyUyDe_1dJ0coj7BerfMrnc2Mp47G'},
-  {c:'esg', n:'IPAS 淨零碳規劃管理師 中級', d:'2026/08/22', s:'done'},
+  {c:'esg', n:'IPAS 淨零碳規劃管理師 中級證照', d:'2026/08/22', s:'done', lic:1},
   {c:'esg', n:'2026商業部門減碳培訓 溫室氣體盤查實戰（臺南）', d:'2026/06/30', s:'done', pdf:'1rZWbAjX06UHOIqTkb5NwZ-VU_iT4X1lk'},
   {c:'esg', n:'2026商業部門減碳培訓 服務碳足跡實務解析（台南）', d:'2026/07/14', s:'done', pdf:'1YswSsOlJIXy7Oz94sMG81pKWyGnjBwzS'},
   {c:'esg', n:'2026商業部門減碳培訓 服務碳足跡實務解析（台中）', d:'2026/07/28', s:'done', pdf:'1RFjS0qZRl9zSWB_nWSVhRg9gWU_XNv2w'},
@@ -1060,21 +1066,21 @@ const DATA = [
   {c:'ai', n:'AI自學證書（Google Cloud）', d:'2025/05/21', s:'done', img:'https://drive.google.com/thumbnail?id=1odv7q6em4Kgk-hRbXmmE5NpONqJSXbc-&sz=w1200'},
   {c:'ai', n:'AI自學證書（AWS Training & Certification）', d:'2025/05/21', s:'done', pdf:'126IIq8_QEEYY1om5HdYdv6q8tMeBwhva'},
   {c:'ai', n:'Gemini Certified Educator', d:'2025/05/21', s:'done', pdf:'13OW72h30NuY05LmH7wUlbt0o4driBT2a'},
-  {c:'ai', n:'IPAS AI 應用規劃師 初級', d:'2025/08/16', s:'done', img:'https://drive.google.com/thumbnail?id=16M3u5W97Sdnuf8ZQXirNUtopgF-t8RWU&sz=w1200'},
-  {c:'ai', n:'資策會 生成式 AI 能力認證', d:'2025/08/17', s:'done', pdf:'1-naZ_vUH_P1LEdjavNxTSveCvhT5S7af'},
+  {c:'ai', n:'IPAS AI 應用規劃師 初級證照', d:'2025/08/16', s:'done', lic:1, pdf:'1P9mlttEZN_7PiBtnRLZ9s9-ixuJmPXIL'},
+  {c:'ai', n:'財團法人資訊工業策進會 生成式 AI 能力認證證照', d:'2025/08/17', s:'done', lic:1, pdf:'1-naZ_vUH_P1LEdjavNxTSveCvhT5S7af'},
   {c:'ai', n:'經濟部 產業 AI 人才培訓 3日 AI 種子班', d:'2025/09/12', s:'done', img:'https://drive.google.com/thumbnail?id=1RIVe28kB-2QDspDCagYRYJT7q-Vpn53U&sz=w1200'},
-  {c:'ai', n:'Microsoft Azure AI-900 人工智慧核心能力', d:'2025/09/29', s:'done', pdf:'1PpXn22oohvoTyfD5cVpOIKvtn-MVAjTF'},
+  {c:'ai', n:'Microsoft Azure AI-900 人工智慧核心能力國際認證證照', d:'2025/09/29', s:'done', lic:1, pdf:'1PpXn22oohvoTyfD5cVpOIKvtn-MVAjTF'},
   {c:'ai', n:'Gemini Certified University Student', d:'2025/12/23', s:'done', pdf:'1dd6X2fPkiDilvPSb-mRA2Vn9BukWhSg-'},
   {c:'ai', n:'Gemini Certified Faculty', d:'2025/12/23', s:'done', img:'https://drive.google.com/thumbnail?id=18LsSNnw103q4Y_Hc6tvQAxw8KR4lnDZb&sz=w1200'},
   {c:'ai', n:'台科大 AI for Good 實戰工作坊', d:'2025/12/26', s:'done', img:'https://drive.google.com/thumbnail?id=1bHTO0Qicm028Wfakw_le8H9Mo4SgsoHO&sz=w1200'},
   {c:'ai', n:'元智大學 AI 大師在身邊 遠距教學', d:'2026/01/05', s:'done', img:'https://drive.google.com/thumbnail?id=1ml_l_trVQetCV_uzO51ws-o-DwN2l7rC&sz=w1200'},
   {c:'ai', n:'AWS Generative AI Business Skill', d:'2026/01/11', s:'done', img:'https://drive.google.com/thumbnail?id=1e5lpqO_Ws5HpeMEobUzDq_aVv5R5YFTW&sz=w1200'},
-  {c:'ai', n:'Taiwan AI Academy AIATC™ 人才認證', d:'2026/03/10', s:'done', pdf:'1qM2JBSxe-i7PDVvl4dUq1ojq2oRchUxg'},
+  {c:'ai', n:'Taiwan AI Academy AIATC™ 人才認證', d:'2026/03/10', s:'done', lic:1, pdf:'1qM2JBSxe-i7PDVvl4dUq1ojq2oRchUxg'},
   {c:'ai', n:'AI 智慧科技賦能認證', d:'2026/03/17', s:'done', img:'https://drive.google.com/thumbnail?id=19GqDASqLWPPm_yqTvnEu5k-Gwh22QaIb&sz=w1200'},
   {c:'ai', n:'經濟部 AI 產業人才培訓（15小時）', d:'2026/03/24', s:'done', pdf:'1dnZRWGK_FycYDNYbl4ZSnAo6piePIvAW'},
   {c:'ai', n:'L2Pro Taiwan AI 時代的專利佈局全攻略', d:'2026/04/25', s:'done', pdf:'1oMvLFNfcaJI2bQOCndFuEc7XpE5-CRMU'},
   {c:'ai', n:'L2Pro Taiwan 課程培訓（3小時）', d:'2026/04/25', s:'done', pdf:'1lqgd__h-ooYQQfS_EwNUdOIa4OApZ7Te'},
-  {c:'ai', n:'資策會 人工智慧工程素養認證', d:'2026/05/17', s:'done', pdf:'1lQX4RlbMpCLADj6DsZyGryCeu7Kg5h-L'},
+  {c:'ai', n:'資策會 人工智慧工程素養認證', d:'2026/05/17', s:'done', lic:1, pdf:'1lQX4RlbMpCLADj6DsZyGryCeu7Kg5h-L'},
   {c:'ai', n:'Anthropic Claude 課程證書', d:'2026/06/12', s:'done', pdf:'1C2QAuOQTjRrnn6S6g8Cpx4jKPzkhYGRM'},
   {c:'ai', n:'Google 數位人才探索 Cloud 學程', d:'2026/07/15', s:'done', pdf:'1Q_OuOp9myXF4WXcOinLAm26vh5rbmZPO'},
   {c:'ai', n:'Google 數位人才探索 AI 職場通識學程', d:'2026/07/15', s:'done', pdf:'1o9x0_UqUI6H1Qcjk13Q3WePJP2Vik0aF'},
@@ -1089,8 +1095,9 @@ const DATA = [
   {c:'ai', n:'master.dev Claude Code 應用認證', d:'2026/07/23', s:'done', pdf:'1nDFN6ZgINpegrtSxnUh5JpynT08zI3N-'},
   {c:'ai', n:'[15I3465]【竹科管理局線上免費講座】生成式AI‐LLM應用證書', d:'2026/08/04', s:'done', pdf:'1YozMsFS_vzdCBIwGwGPDzCBeBpn_2XzH'},
   {c:'ai', n:'[15I3467]【竹科管理局線上免費課程】人工智慧科技引發法律與倫理間的拉力', d:'2026/08/12', s:'done', pdf:'1HU6Cb_GY0-90kNx7PvKGey6YYuFivWOM'},
+  {c:'ai', n:'Google AI 專業證書（Coursera）', d:'2026/11/02', s:'done', pdf:'1Bg5hMGldywHJKVNMkI2npxIrOZJ8oH8-'},
   // PM
-  {c:'pm', n:'PMP® 國際專案管理師', d:'2026/02/26', s:'done', img:'https://drive.google.com/thumbnail?id=12Tx1udR6KWewOSx22j_r5166sxQM2Agl&sz=w1200'},
+  {c:'pm', n:'PMP® 國際專案管理師證照', d:'2026/02/26', s:'done', lic:1, img:'https://drive.google.com/thumbnail?id=12Tx1udR6KWewOSx22j_r5166sxQM2Agl&sz=w1200'},
   {c:'pm', n:'PMI - Data Landscape of GenAI for Project Managers', d:'2026/06/29', s:'done', pdf:'16GqxbzsrG_rbwMVPI9EWce7RE8nMZYDx'},
   {c:'pm', n:'PMI - Generative AI Overview for Project Managers', d:'2026/06/29', s:'done', pdf:'1y9NaYPXPhKAOH5rC7eEL02zXojQduiLM'},
   {c:'pm', n:'PMI - Practical Application of GenAI for Project Managers', d:'2026/06/29', s:'done', pdf:'1vMc6feMgKuOB_zU8btoa8TnK7LHFb-yT'},
@@ -1099,7 +1106,7 @@ const DATA = [
   {c:'biz', n:'[15I3468]【竹科管理局線上免費課程】OKR績效管理實務班', d:'2026/08/13', s:'done', pdf:'1JA-lCgNTm5F5mjDxNuLT9aDVfk2iIFRI'},
   {c:'biz', n:'[15I3469]【竹科管理局線上免費課程】專利取得暨運用策略', d:'2026/08/18', s:'done', pdf:'1Mxrqzog4hflgKy_GlDTfvxlOYrh9VAid'},
   // IE
-  {c:'ie', n:'甲種職業安全衛生業務主管', d:'2025/11/09', s:'done', pdf:'1Vy9aSq9m-cKSC1WeU7rQKI4qlhRVIQIK'},
+  {c:'ie', n:'甲種職業安全衛生業務主管證照', d:'2025/11/09', s:'done', lic:1, pdf:'1Vy9aSq9m-cKSC1WeU7rQKI4qlhRVIQIK'},
   {c:'ie', n:'IATF 16949:2016 汽車業品質管理系統內部稽核員', d:'2026/01/29', s:'done', pdf:'1EXr5XZ2M2297gWVEEkpde8rgoRSRxP1Y'},
   {c:'ie', n:'Six Sigma Green Belt', d:'2027/02/28', s:'prog'},
   // Security
@@ -1108,7 +1115,7 @@ const DATA = [
   {c:'lang', n:'PVQC 專業英文詞彙能力國際認證', d:'2021/10/08', s:'done', img:'https://drive.google.com/thumbnail?id=1OGwkRWRdHyZRmI5M7tVXqlNcJr1s4VAI&sz=w1200'},
   {c:'lang', n:'多益 600 分', d:'2027/05/03', s:'prog'},
   // Medical
-  {c:'med', n:'高考護理師執照', d:'2020/09/03', s:'done', img:'https://drive.google.com/thumbnail?id=124A4hUlpY8FUMIK7FaaSu86N6Us2JwQ3&sz=w1200'},
+  {c:'med', n:'高考護理師執照', d:'2020/09/03', s:'done', lic:1, pdf:'1Pu7iNtJ-R224Q7GoCihIO7JNZumTxrlw'},
   {c:'med', n:'ACLS 高級心臟救命術', d:'2021/10/24', s:'done', img:'https://drive.google.com/thumbnail?id=15AkrpEcE_QZ8ovqxzuCsWQjGhRpBfeDJ&sz=w1200'},
   {c:'med', n:'ETTC 急診外傷訓練課程', d:'2021/11/21', s:'done', img:'https://drive.google.com/thumbnail?id=1EkORuVhvTbnnWViwP--oOjC6xTUkMkQp&sz=w1200'},
   {c:'med', n:'衛福部 長期照顧專業人員 Level 1', d:'2024/03/26', s:'done', img:'https://drive.google.com/thumbnail?id=1hUzD-6cprF8HtnVDJymOH-YpGbweOfFu&sz=w1200'},
@@ -1123,6 +1130,7 @@ const DATA = [
   {c:'sports', n:'全國賽：承億盃 社會團體男丁組 8 強', d:'2023/02/10', s:'done', img:'https://drive.google.com/thumbnail?id=16FZ9U0muzToUeBjcjfJk_ffuGOmIhnXD&sz=w1200'},
   {c:'sports', n:'全國賽：寶元快客盃 男雙 8 強', d:'2024/03/03', s:'done', img:'https://drive.google.com/thumbnail?id=1nwmCxWjLtgfvF0hCTCp3sz9y9B-JToVH&sz=w1200'},
   {c:'sports', n:'全國賽：捷豹盃 25–35y 男雙 16 強', d:'2026/01/25', s:'done', img:'https://drive.google.com/thumbnail?id=1ZBbeIbuATwUL6cyZru8-ZKJjHnHzZvzm&sz=w1200'},
+  {c:'sports', n:'2026 第三屆國際福爾摩沙盃羽球錦標賽（參賽）', d:'2026/10/25', s:'done', pdf:'19HipvlP9LXsEQ186I2vsmO-5LeTC_ddb'},
 ];
 
 let currentCat = 'all';
@@ -1154,8 +1162,10 @@ document.getElementById('kpi-cert-count').textContent = DATA.length + '+';
 function render() {
   const grid = document.getElementById('grid');
   const isProg = currentCat === 'prog';
+  const isLic = currentCat === 'lic';
   let items = currentCat === 'all' ? DATA
             : isProg ? DATA.filter(d => d.s === 'prog')
+            : isLic ? DATA.filter(d => d.lic)
             : DATA.filter(d => d.c === currentCat);
   if (currentSearch) {
     const q = currentSearch.toLowerCase();
@@ -1164,12 +1174,17 @@ function render() {
 
   const allDone = DATA.filter(d=>d.s==='done').length;
   const allProg = DATA.filter(d=>d.s==='prog').length;
-  document.getElementById('s-total').textContent = currentCat === 'all' ? DATA.length : items.length;
+  // 證照＝DATA 中帶 lic 旗標的項目（可同時屬於任一類別，只計一次）；其餘一律為證書
+  const base = currentCat === 'all' ? DATA : items;
+  const licCount = base.filter(d => d.lic).length;
+  document.getElementById('s-lic').textContent   = licCount;
+  document.getElementById('s-cert').textContent  = base.length - licCount;
   document.getElementById('s-done').textContent  = isProg ? 0 : (currentCat === 'all' ? allDone : items.filter(d=>d.s==='done').length);
   document.getElementById('s-prog').textContent  = currentCat === 'all' ? allProg : items.filter(d=>d.s==='prog').length;
 
-  const label = currentCat === 'all' ? '所有證照'
+  const label = currentCat === 'all' ? '所有證照與證書'
               : isProg ? '考取中的證照'
+              : isLic ? '證照'
               : CAT_LABEL[currentCat];
   document.getElementById('grid-label').textContent = label;
   document.getElementById('search-count').textContent = currentSearch ? `找到 ${items.length} 張` : '';
